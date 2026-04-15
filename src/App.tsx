@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Play,
   Download,
   Smartphone,
   Monitor,
@@ -88,9 +87,11 @@ function App() {
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 md:p-8">
       <div className="w-full max-w-5xl">
         <div className="text-center mb-12 md:mb-16">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-sky-500/10 border border-sky-500/30 mb-6">
-            <Play className="w-10 h-10 text-sky-400" />
-          </div>
+          <img
+            src="/icon.png"
+            alt="Mr. Player Logo"
+            className="w-24 h-24 mx-auto mb-6 rounded-2xl"
+          />
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
             Mr. Player
           </h1>
