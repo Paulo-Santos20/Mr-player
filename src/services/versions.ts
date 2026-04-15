@@ -7,10 +7,7 @@ export interface DownloadVersion {
   platform: "android" | "windows";
 }
 
-const GITHUB_APK_OWNER = "Paulo-Santos20";
-const GITHUB_APK_REPO = "TV";
-const GITHUB_EXE_OWNER = "Paulo-Santos20";
-const GITHUB_EXE_REPO = "TV.exe";
+const GITHUB_OWNER = "Paulo-Santos20";
 const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN || "";
 
 function formatFileSize(bytes: number): string {
@@ -30,128 +27,122 @@ function formatDate(dateString: string): string {
   });
 }
 
+async function getGitHubFileInfo(
+  owner: string,
+  repo: string,
+  path: string,
+): Promise<{ size: number; date: string } | null> {
+  if (!GITHUB_TOKEN) return null;
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1&path=${path}`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          Accept: "application/vnd.github.v3+json",
+        },
+      },
+    );
+
+    if (response.ok) {
+      const commits = await response.json();
+      const lastCommit = commits[0];
+      return {
+        date: lastCommit?.commit?.author?.date || new Date().toISOString(),
+        size: 0,
+      };
+    }
+  } catch {
+    // Ignore errors
+  }
+  return null;
+}
+
+async function getGitHubReleaseInfo(
+  owner: string,
+  repo: string,
+): Promise<{ version: string; date: string } | null> {
+  if (!GITHUB_TOKEN) return null;
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          Accept: "application/vnd.github.v3+json",
+        },
+      },
+    );
+
+    if (response.ok) {
+      const release = await response.json();
+      return {
+        version: release.tag_name || "latest",
+        date: release.published_at || new Date().toISOString(),
+      };
+    }
+  } catch {
+    // Ignore errors
+  }
+  return null;
+}
+
 export async function fetchAPKVersion(): Promise<DownloadVersion | null> {
   try {
-    const headers: HeadersInit = {
-      Accept: "application/vnd.github.v3+json",
-    };
-    if (GITHUB_TOKEN) {
-      headers.Authorization = `token ${GITHUB_TOKEN}`;
-    }
-
-    const response = await fetch(
-      `https://api.github.com/repos/${GITHUB_APK_OWNER}/${GITHUB_APK_REPO}/contents/public/mrplayer.apk`,
-      { headers },
+    const githubInfo = await getGitHubFileInfo(
+      GITHUB_OWNER,
+      "TV",
+      "public/mrplayer.apk",
     );
-
-    if (!response.ok) {
-      const releaseResponse = await fetch(
-        `https://api.github.com/repos/${GITHUB_APK_OWNER}/${GITHUB_APK_REPO}/releases/latest`,
-        { headers },
-      );
-      if (releaseResponse.ok) {
-        const release = await releaseResponse.json();
-        const apkAsset = release.assets?.find((a: any) =>
-          a.name.endsWith(".apk"),
-        );
-        if (apkAsset) {
-          return {
-            version: release.tag_name || "latest",
-            fileName: apkAsset.name,
-            downloadUrl: apkAsset.browser_download_url,
-            size: formatFileSize(apkAsset.size),
-            date: formatDate(release.published_at),
-            platform: "android",
-          };
-        }
-      }
-      throw new Error("APK not found");
-    }
-
-    const data = await response.json();
-    const commitResponse = await fetch(
-      `https://api.github.com/repos/${GITHUB_APK_OWNER}/${GITHUB_APK_REPO}/commits?per_page=1`,
-      { headers },
-    );
-    const commits = await commitResponse.json();
-    const lastCommit = commits[0];
-    const date = lastCommit?.commit?.author?.date || new Date().toISOString();
+    const date = githubInfo?.date || new Date().toISOString();
 
     return {
       version: "latest",
-      fileName: data.name,
-      downloadUrl: data.download_url,
-      size: formatFileSize(data.size),
+      fileName: "mrplayer.apk",
+      downloadUrl: "/mrplayer.apk",
+      size: githubInfo?.size ? formatFileSize(githubInfo.size) : "N/A",
       date: formatDate(date),
       platform: "android",
     };
   } catch (error) {
     console.error("Error fetching APK version:", error);
-    return null;
+    return {
+      version: "latest",
+      fileName: "mrplayer.apk",
+      downloadUrl: "/mrplayer.apk",
+      size: "N/A",
+      date: formatDate(new Date().toISOString()),
+      platform: "android",
+    };
   }
 }
 
 export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
   try {
-    const headers: HeadersInit = {
-      Accept: "application/vnd.github.v3+json",
+    const githubInfo = await getGitHubReleaseInfo(GITHUB_OWNER, "TV.exe");
+    const version = githubInfo?.version || "latest";
+    const date = githubInfo?.date || new Date().toISOString();
+
+    return {
+      version,
+      fileName: "mr-player.exe",
+      downloadUrl: "/mr-player.exe",
+      size: "N/A",
+      date: formatDate(date),
+      platform: "windows",
     };
-    if (GITHUB_TOKEN) {
-      headers.Authorization = `token ${GITHUB_TOKEN}`;
-    }
-
-    const response = await fetch(
-      `https://api.github.com/repos/${GITHUB_EXE_OWNER}/${GITHUB_EXE_REPO}/releases/latest`,
-      { headers },
-    );
-
-    if (!response.ok) {
-      const releaseResponse = await fetch(
-        `https://api.github.com/repos/${GITHUB_EXE_OWNER}/${GITHUB_EXE_REPO}/contents/release/mr-player.exe`,
-        { headers },
-      );
-      if (releaseResponse.ok) {
-        const data = await releaseResponse.json();
-        const commitResponse = await fetch(
-          `https://api.github.com/repos/${GITHUB_EXE_OWNER}/${GITHUB_EXE_REPO}/commits?per_page=1`,
-          { headers },
-        );
-        const commits = await commitResponse.json();
-        const lastCommit = commits[0];
-        const date =
-          lastCommit?.commit?.author?.date || new Date().toISOString();
-
-        return {
-          version: "latest",
-          fileName: "mr-player.exe",
-          downloadUrl: data.download_url,
-          size: formatFileSize(data.size),
-          date: formatDate(date),
-          platform: "windows",
-        };
-      }
-      throw new Error("EXE not found");
-    }
-
-    const release = await response.json();
-    const exeAsset = release.assets?.find(
-      (a: any) => a.name.endsWith(".exe") && a.name.includes("setup"),
-    );
-
-    if (exeAsset) {
-      return {
-        version: release.tag_name || "latest",
-        fileName: exeAsset.name,
-        downloadUrl: exeAsset.browser_download_url,
-        size: formatFileSize(exeAsset.size),
-        date: formatDate(release.published_at),
-        platform: "windows",
-      };
-    }
-    return null;
   } catch (error) {
     console.error("Error fetching EXE version:", error);
-    return null;
+    return {
+      version: "latest",
+      fileName: "mr-player.exe",
+      downloadUrl: "/mr-player.exe",
+      size: "N/A",
+      date: formatDate(new Date().toISOString()),
+      platform: "windows",
+    };
   }
 }
 
