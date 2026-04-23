@@ -17,14 +17,27 @@ function App() {
     arm7a: DownloadVersion | null;
     universal: DownloadVersion | null;
   } | null>(null);
+  const [projectorApk, setProjectorApk] = useState<DownloadVersion | null>(null);
   const [exeVersion, setExeVersion] = useState<DownloadVersion | null>(null);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"android" | "windows" | "projectors">("android");
 
+  const fileNameMap = {
+    android: {
+      universal: "mrplayer-v4.2.1.apk",
+      arm7a: "mrplayer-v7a.apk",
+    },
+    projectors: {
+      universal: "mrplayer-gimbal-v4.2.1.apk",
+    },
+    windows: "mr-player-desktop-setup.exe",
+  };
+
   useEffect(() => {
     const storedApks = localStorage.getItem("mrplayer_apks");
     const storedExe = localStorage.getItem("mrplayer_exe");
+    const storedProjector = localStorage.getItem("mrplayer_projector");
 
     if (storedApks) {
       const parsed = JSON.parse(storedApks);
@@ -33,22 +46,36 @@ function App() {
       setApks({
         universal: {
           version: "4.2.1",
-          fileName: "mrplayer-gimbal-v4.2.1.apk",
-          downloadUrl: "/mrplayer-gimbal-v4.2.1.apk",
-          size: "32.5 MB",
+          fileName: fileNameMap.android.universal,
+          downloadUrl: `/${fileNameMap.android.universal}`,
+          size: "84.4 MB",
           date: "23/04/2026",
           platform: "android",
           variant: "universal"
         },
         arm7a: {
           version: "4.2.1",
-          fileName: "mrplayer-gimbal-v4.2.1.apk",
-          downloadUrl: "/mrplayer-gimbal-v4.2.1.apk",
+          fileName: fileNameMap.android.arm7a,
+          downloadUrl: `/${fileNameMap.android.arm7a}`,
           size: "32.5 MB",
           date: "23/04/2026",
           platform: "android",
           variant: "arm7a"
         }
+      });
+    }
+
+    if (storedProjector) {
+      setProjectorApk(JSON.parse(storedProjector));
+    } else {
+      setProjectorApk({
+        version: "4.2.1",
+        fileName: fileNameMap.projectors.universal,
+        downloadUrl: `/${fileNameMap.projectors.universal}`,
+        size: "32.5 MB",
+        date: "23/04/2026",
+        platform: "android",
+        variant: "universal"
       });
     }
 
@@ -121,8 +148,8 @@ function App() {
     version: DownloadVersion | null;
   }) => {
     const fileNameMap: Record<APKVariant, string> = {
-      arm7a: "mrplayer-gimbal-v4.2.1.apk",
-      universal: "mrplayer-gimbal-v4.2.1.apk",
+      arm7a: "mrplayer-v7a.apk",
+      universal: "mrplayer-v4.2.1.apk",
     };
 
     return (
@@ -290,8 +317,8 @@ function App() {
                     Versão otimizada para projetores e smart TVs.
                   </p>
 
-                  {exeVersion ? (
-                    <VersionBadge version={exeVersion} />
+                  {projectorApk ? (
+                    <VersionBadge version={projectorApk} />
                   ) : (
                     <div className="flex items-center justify-center gap-2 text-xs text-slate-500 mb-3">
                       <AlertCircle className="w-3 h-3" />
@@ -301,7 +328,7 @@ function App() {
 
                   <button
                     onClick={() =>
-                      handleDownload(exeVersion, "mr-player-desktop-setup.exe")
+                      handleDownload(projectorApk, fileNameMap.projectors.universal)
                     }
                     disabled={downloading !== null}
                     className="w-full md:w-auto md:px-12 py-4 bg-purple-500 hover:bg-purple-600 disabled:bg-purple-500/50 text-white font-bold rounded-full flex items-center justify-center gap-2 transition-colors"
@@ -314,7 +341,7 @@ function App() {
                     ) : (
                       <>
                         <Download className="w-5 h-5" />
-                        Baixar EXE
+                        Baixar APK
                       </>
                     )}
                   </button>
