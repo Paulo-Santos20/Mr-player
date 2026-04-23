@@ -39,7 +39,9 @@ function App() {
     const storedExe = localStorage.getItem("mrplayer_exe");
     const storedProjector = localStorage.getItem("mrplayer_projector");
 
-    if (storedApks) {
+    const isValidSize = (obj: any) => obj && obj.size && obj.size !== "N/A" && !obj.size.includes("0,");
+
+    if (storedApks && isValidSize(JSON.parse(storedApks))) {
       const parsed = JSON.parse(storedApks);
       setApks(parsed);
     } else {
@@ -65,7 +67,7 @@ function App() {
       });
     }
 
-    if (storedProjector) {
+    if (storedProjector && isValidSize(JSON.parse(storedProjector))) {
       setProjectorApk(JSON.parse(storedProjector));
     } else {
       setProjectorApk({
@@ -79,7 +81,7 @@ function App() {
       });
     }
 
-    if (storedExe) {
+    if (storedExe && isValidSize(JSON.parse(storedExe))) {
       setExeVersion(JSON.parse(storedExe));
     } else {
       setExeVersion({
