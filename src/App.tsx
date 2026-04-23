@@ -15,41 +15,41 @@ type APKVariant = "arm7a" | "universal";
 function App() {
   const [apks] = useState({
     universal: {
-      version: "4.2.1",
-      fileName: "mrplayer-v4.2.1.apk",
-      downloadUrl: "/mrplayer-v4.2.1.apk",
+      version: "4.2.2",
+      fileName: "mrplayer-v4.2.2.apk",
+      downloadUrl: "/mrplayer-v4.2.2.apk",
       size: "84.4 MB",
-      date: "23/04/2026",
+      date: "24/04/2026",
       platform: "android" as const,
       variant: "universal" as const
     },
     arm7a: {
-      version: "4.2.1",
-      fileName: "mrplayer-v7a.apk",
-      downloadUrl: "/mrplayer-v7a.apk",
+      version: "4.2.2",
+      fileName: "mrplayer-v7a-v4.2.2.apk",
+      downloadUrl: "/mrplayer-v7a-v4.2.2.apk",
       size: "32.5 MB",
-      date: "23/04/2026",
+      date: "24/04/2026",
       platform: "android" as const,
       variant: "arm7a" as const
     }
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "4.2.1",
-    fileName: "mrplayer-gimbal-v4.2.1.apk",
-    downloadUrl: "/mrplayer-gimbal-v4.2.1.apk",
+    version: "4.2.2",
+    fileName: "mrplayer-gimbal-v4.2.2.apk",
+    downloadUrl: "/mrplayer-gimbal-v4.2.2.apk",
     size: "32.5 MB",
-    date: "23/04/2026",
+    date: "24/04/2026",
     platform: "android",
     variant: "universal"
   });
 
   const [exeVersion] = useState<DownloadVersion | null>({
-    version: "latest",
+    version: "4.2.2",
     fileName: "mr-player-desktop-setup.exe",
     downloadUrl: "/mr-player-desktop-setup.exe",
     size: "21 MB",
-    date: "23/04/2026",
+    date: "24/04/2026",
     platform: "windows"
   });
 
