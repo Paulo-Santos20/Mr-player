@@ -58,33 +58,25 @@ function App() {
 
   const fileNameMap = {
     android: {
-      universal: "mrplayer-v4.2.1.apk",
-      arm7a: "mrplayer-v7a.apk",
+      universal: "mrplayer-v4.2.2.apk",
+      arm7a: "mrplayer-v7a-v4.2.2.apk",
     },
     projectors: {
-      universal: "mrplayer-gimbal-v4.2.1.apk",
+      universal: "mrplayer-gimbal-v4.2.2.apk",
     },
     windows: "mr-player-desktop-setup.exe",
   };
 
   const handleDownload = async (version: DownloadVersion | null, fallbackFile: string) => {
     setDownloading(fallbackFile);
+    const url = version?.downloadUrl || `/${fallbackFile}`;
     try {
-      const url = version?.downloadUrl || `/${fallbackFile}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error("Download failed");
-
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.setAttribute("download", version?.fileName || fallbackFile);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(blobUrl);
+      window.open(url, "_blank");
     } catch (error) {
       console.error("Download error:", error);
+      window.open(url, "_blank");
     } finally {
       setDownloading(null);
     }
