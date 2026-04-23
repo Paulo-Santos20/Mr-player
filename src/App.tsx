@@ -8,7 +8,7 @@ import {
   AlertCircle,
   Tv
 } from "lucide-react";
-import { fetchAllVersions, type DownloadVersion } from "./services/versions";
+import { type DownloadVersion } from "./services/versions";
 
 type APKVariant = "arm7a" | "universal";
 
@@ -23,48 +23,70 @@ function App() {
   const [activeTab, setActiveTab] = useState<"android" | "windows" | "projectors">("android");
 
   useEffect(() => {
-    async function loadVersions() {
-      try {
-        const { apks: apkData, exe } = await fetchAllVersions();
-        setApks(apkData);
-        setExeVersion(exe);
-      } catch (error) {
-        console.error("Error loading versions:", error);
-      } finally {
-        setLoading(false);
-      }
+    const storedApks = localStorage.getItem("mrplayer_apks");
+    const storedExe = localStorage.getItem("mrplayer_exe");
+
+    if (storedApks) {
+      const parsed = JSON.parse(storedApks);
+      setApks(parsed);
+    } else {
+      setApks({
+        universal: {
+          version: "4.2.1",
+          fileName: "mrplayer-gimbal-v4.2.1.apk",
+          downloadUrl: "/mrplayer-gimbal-v4.2.1.apk",
+          size: "32.5 MB",
+          date: "23/04/2026",
+          platform: "android",
+          variant: "universal"
+        },
+        arm7a: {
+          version: "4.2.1",
+          fileName: "mrplayer-gimbal-v4.2.1.apk",
+          downloadUrl: "/mrplayer-gimbal-v4.2.1.apk",
+          size: "32.5 MB",
+          date: "23/04/2026",
+          platform: "android",
+          variant: "arm7a"
+        }
+      });
     }
-    loadVersions();
+
+    if (storedExe) {
+      setExeVersion(JSON.parse(storedExe));
+    } else {
+      setExeVersion({
+        version: "latest",
+        fileName: "mr-player-desktop-setup.exe",
+        downloadUrl: "/mr-player-desktop-setup.exe",
+        size: "20 MB",
+        date: "23/04/2026",
+        platform: "windows"
+      });
+    }
+
+    setLoading(false);
   }, []);
 
   const handleDownload = async (
     version: DownloadVersion | null,
     fallbackFile: string,
   ) => {
-    if (!version) {
-      const link = document.createElement("a");
-      link.href = `/${fallbackFile}`;
-      link.setAttribute("download", fallbackFile);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      return;
-    }
-
-    setDownloading(version.fileName);
+    setDownloading(fallbackFile);
     try {
-      const response = await fetch(version.downloadUrl);
+      const url = version?.downloadUrl || `/${fallbackFile}`;
+      const response = await fetch(url);
       if (!response.ok) throw new Error("Download failed");
 
       const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
+      const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", version.fileName);
+      link.href = blobUrl;
+      link.setAttribute("download", version?.fileName || fallbackFile);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("Download error:", error);
       const link = document.createElement("a");
@@ -99,8 +121,8 @@ function App() {
     version: DownloadVersion | null;
   }) => {
     const fileNameMap: Record<APKVariant, string> = {
-      arm7a: "mrplayer-v7a.apk",
-      universal: "mrplayer.apk",
+      arm7a: "mrplayer-gimbal-v4.2.1.apk",
+      universal: "mrplayer-gimbal-v4.2.1.apk",
     };
 
     return (
@@ -167,7 +189,7 @@ function App() {
 
         {!loading && (
           <div className="mb-8">
-            <div className="flex justify-center gap-2 mb-8">
+            <div className="flex justify-center gap-2 mb-8 flex-wrap">
               <button
                 onClick={() => setActiveTab("android")}
                 className={`px-6 py-3 rounded-full font-bold flex items-center gap-2 transition-colors ${
