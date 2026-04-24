@@ -3,7 +3,6 @@ import {
   Download,
   Smartphone,
   Monitor,
-  Loader2,
   CheckCircle,
   Tv,
   RotateCcw
@@ -53,7 +52,6 @@ function App() {
     platform: "windows"
   });
 
-  const [downloading, setDownloading] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<"android" | "windows" | "projectors">("android");
 
   const fileNameMap = {
@@ -67,19 +65,9 @@ function App() {
     windows: "mr-player-desktop-setup.exe",
   };
 
-  const handleDownload = async (version: DownloadVersion | null, fallbackFile: string) => {
-    setDownloading(fallbackFile);
+  const handleDownload = (version: DownloadVersion | null, fallbackFile: string) => {
     const url = version?.downloadUrl || `/${fallbackFile}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error("Download failed");
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error("Download error:", error);
-      window.open(url, "_blank");
-    } finally {
-      setDownloading(null);
-    }
+    window.location.href = url;
   };
 
   const handleClearCache = () => {
@@ -101,9 +89,8 @@ function App() {
       <h4 className="text-lg font-bold text-white mb-2">{label}</h4>
       <p className="text-slate-400 text-xs mb-3">{variant === "arm7a" ? "Processadores Antigos (ARMv7)" : "Todos os dispositivos"}</p>
       <VersionBadge version={version} />
-      <button onClick={() => handleDownload(version, fileNameMap.android[variant])} disabled={downloading !== null} className="w-full py-3 bg-green-500 hover:bg-green-600 disabled:bg-green-500/50 text-white font-bold rounded-full flex items-center justify-center gap-2">
-        {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-        Baixar
+      <button onClick={() => handleDownload(version, fileNameMap.android[variant])} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+        <Download className="w-4 h-4" /> Baixar
       </button>
     </div>
   );
@@ -144,8 +131,8 @@ function App() {
                 <h3 className="text-xl font-bold text-white mb-3">Windows</h3>
                 <p className="text-slate-400 text-sm mb-4">Assista direto do seu PC.</p>
                 <VersionBadge version={exeVersion} />
-                <button onClick={() => handleDownload(exeVersion, fileNameMap.windows)} disabled={downloading !== null} className="w-full md:w-auto md:px-12 py-4 bg-sky-500 hover:bg-sky-600 disabled:bg-sky-500/50 text-white font-bold rounded-full flex items-center justify-center gap-2">
-                  {downloading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />} Baixar EXE
+                <button onClick={() => handleDownload(exeVersion, fileNameMap.windows)} className="w-full md:w-auto md:px-12 py-4 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+                  <Download className="w-5 h-5" /> Baixar EXE
                 </button>
               </div>
             </div>
@@ -158,11 +145,11 @@ function App() {
                 <h3 className="text-xl font-bold text-white mb-3">Projetores</h3>
                 <p className="text-slate-400 text-sm mb-4">Versão otimizada para projetores.</p>
                 <VersionBadge version={projectorApk} />
-                <button onClick={() => handleDownload(projectorApk, fileNameMap.projectors.universal)} disabled={downloading !== null} className="w-full md:w-auto md:px-12 py-4 bg-purple-500 hover:bg-purple-600 disabled:bg-purple-500/50 text-white font-bold rounded-full flex items-center justify-center gap-2">
-                  {downloading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />} Baixar APK
+                <button onClick={() => handleDownload(projectorApk, fileNameMap.projectors.universal)} className="w-full md:w-auto md:px-12 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+                  <Download className="w-5 h-5" /> Baixar APK
                 </button>
-                <button onClick={handleClearCache} className="mt-3 text-xs text-slate-500 underline">
-                  <RotateCcw className="w-3 h-3 inline mr-1" /> Limpar Cache
+                <button onClick={handleClearCache} className="mt-3 text-xs text-slate-500 underline flex items-center justify-center gap-1">
+                  <RotateCcw className="w-3 h-3" /> Limpar Cache
                 </button>
               </div>
             </div>

@@ -4,6 +4,10 @@ node_modules/
 # Build
 dist/
 
+# Force include APK and EXE files
+!dist/*.apk
+!dist/*.exe
+
 # Environment
 .env
 .env.local
