@@ -103,7 +103,7 @@ function App() {
         <div className="text-center mb-12 md:mb-16">
           <img src="/icon.png" alt="Mr. Player Logo" className="w-24 h-24 mx-auto mb-6 rounded-2xl" />
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Mr. Player</h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência IPTV.</p>
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência IPTV v4.2.2.</p>
         </div>
 
         <div className="mb-8">
