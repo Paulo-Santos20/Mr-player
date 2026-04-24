@@ -16,18 +16,18 @@ const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
 function App() {
   const [apks] = useState({
     universal: {
-      version: "4.2.2",
-      fileName: "mrplayer-v4.2.2.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v4.2.2.apk`,
+      version: "4.2.3",
+      fileName: "mrplayer-v4.2.3.apk",
+      downloadUrl: `${FIRE_HOSTING}/mrplayer-v4.2.3.apk`,
       size: "84.4 MB",
       date: "24/04/2026",
       platform: "android" as const,
       variant: "universal" as const
     },
     arm7a: {
-      version: "4.2.2",
-      fileName: "mrplayer-v7a-v4.2.2.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.2.apk`,
+      version: "4.2.3",
+      fileName: "mrplayer-v7a-v4.2.3.apk",
+      downloadUrl: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.3.apk`,
       size: "32.5 MB",
       date: "24/04/2026",
       platform: "android" as const,
@@ -36,17 +36,17 @@ function App() {
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "4.2.2",
-    fileName: "mrplayer-gimbal-v4.2.2.apk",
-    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal-v4.2.2.apk`,
-    size: "32.5 MB",
+    version: "4.2.3",
+    fileName: "mrplayer-gimbal-v4.2.3.apk",
+    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal-v4.2.3.apk`,
+    size: "85 MB",
     date: "24/04/2026",
     platform: "android",
     variant: "universal"
   });
 
   const [exeVersion] = useState<DownloadVersion | null>({
-    version: "4.2.2",
+    version: "4.2.3",
     fileName: "mr-player-desktop-setup.exe",
     downloadUrl: `${FIRE_HOSTING}/mr-player-desktop-setup.exe`,
     size: "21 MB",
@@ -103,7 +103,7 @@ function App() {
         <div className="text-center mb-12 md:mb-16">
           <img src="/icon.png" alt="Mr. Player Logo" className="w-24 h-24 mx-auto mb-6 rounded-2xl" />
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Mr. Player</h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência IPTV v4.2.2.</p>
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência IPTV v4.2.3.</p>
         </div>
 
         <div className="mb-8">
