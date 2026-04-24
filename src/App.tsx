@@ -11,14 +11,14 @@ import { type DownloadVersion } from "./services/versions";
 
 type APKVariant = "arm7a" | "universal";
 
-const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
+const FIRE_HOSTING = "";
 
 function App() {
   const [apks] = useState({
     universal: {
       version: "4.2.2",
       fileName: "mrplayer-v4.2.2.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v4.2.2.apk`,
+      downloadUrl: "/mrplayer-v4.2.2.apk",
       size: "84.4 MB",
       date: "24/04/2026",
       platform: "android" as const,
@@ -27,7 +27,7 @@ function App() {
     arm7a: {
       version: "4.2.2",
       fileName: "mrplayer-v7a-v4.2.2.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.2.apk`,
+      downloadUrl: "/mrplayer-v7a-v4.2.2.apk",
       size: "32.5 MB",
       date: "24/04/2026",
       platform: "android" as const,
@@ -38,7 +38,7 @@ function App() {
   const [projectorApk] = useState<DownloadVersion | null>({
     version: "4.2.2",
     fileName: "mrplayer-gimbal-v4.2.2.apk",
-    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal-v4.2.2.apk`,
+    downloadUrl: "/mrplayer-gimbal-v4.2.2.apk",
     size: "32.5 MB",
     date: "24/04/2026",
     platform: "android",
@@ -48,7 +48,7 @@ function App() {
   const [exeVersion] = useState<DownloadVersion | null>({
     version: "4.2.2",
     fileName: "mr-player-desktop-setup.exe",
-    downloadUrl: `${FIRE_HOSTING}/mr-player-desktop-setup.exe`,
+    downloadUrl: "/mr-player-desktop-setup.exe",
     size: "21 MB",
     date: "24/04/2026",
     platform: "windows"
@@ -58,13 +58,13 @@ function App() {
 
   const fileNameMap = {
     android: {
-      universal: `${FIRE_HOSTING}/mrplayer-v4.2.2.apk`,
-      arm7a: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.2.apk`,
+      universal: "mrplayer-v4.2.2.apk",
+      arm7a: "mrplayer-v7a-v4.2.2.apk",
     },
     projectors: {
-      universal: `${FIRE_HOSTING}/mrplayer-gimbal-v4.2.2.apk`,
+      universal: "mrplayer-gimbal-v4.2.2.apk",
     },
-    windows: `${FIRE_HOSTING}/mr-player-desktop-setup.exe`,
+    windows: "mr-player-desktop-setup.exe",
   };
 
   const handleDownload = (version: DownloadVersion | null, fallbackFile: string) => {
