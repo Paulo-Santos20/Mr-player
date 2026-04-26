@@ -139,8 +139,8 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
 
     return {
       version,
-      fileName: "mr-player-desktop-setup.exe",
-      downloadUrl: `${FIRE_HOSTING_URL}/mr-player-desktop-setup.exe`,
+      fileName: "mr-player-desktop-setup-v1.0.0.exe",
+      downloadUrl: `${FIRE_HOSTING_URL}/mr-player-desktop-setup-v1.0.0.exe`,
       size: "N/A",
       date: formatDate(date),
       platform: "windows",
@@ -149,8 +149,8 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
     console.error("Error fetching EXE version:", error);
     return {
       version: "latest",
-      fileName: "mr-player-desktop-setup.exe",
-      downloadUrl: `${FIRE_HOSTING_URL}/mr-player-desktop-setup.exe`,
+      fileName: "mr-player-desktop-setup-v1.0.0.exe",
+      downloadUrl: `${FIRE_HOSTING_URL}/mr-player-desktop-setup-v1.0.0.exe`,
       size: "N/A",
       date: formatDate(new Date().toISOString()),
       platform: "windows",
