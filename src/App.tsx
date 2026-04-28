@@ -14,7 +14,7 @@ const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
 function App() {
   const [apks] = useState({
     universal: {
-      version: "4.5.0",
+      version: "4.5.1",
       fileName: "mrplayer.apk",
       downloadUrl: `${FIRE_HOSTING}/mrplayer.apk`,
       size: "64 MB",
@@ -25,10 +25,10 @@ function App() {
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "4.5.0",
+    version: "4.5.1",
     fileName: "mrplayer-gimbal.apk",
     downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
-    size: "61 MB",
+    size: "64 MB",
     date: "28/04/2026",
     platform: "android",
     variant: "universal"
