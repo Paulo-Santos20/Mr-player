@@ -9,29 +9,18 @@ import {
 } from "lucide-react";
 import { type DownloadVersion } from "./services/versions";
 
-type APKVariant = "arm7a" | "universal";
-
 const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
 
 function App() {
   const [apks] = useState({
     universal: {
-      version: "4.2.4",
-      fileName: "mrplayer-v4.2.4.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v4.2.4.apk`,
-      size: "84.4 MB",
-      date: "24/04/2026",
+      version: "4.5.0",
+      fileName: "mrplayer.apk",
+      downloadUrl: `${FIRE_HOSTING}/mrplayer.apk`,
+      size: "64 MB",
+      date: "28/04/2026",
       platform: "android" as const,
       variant: "universal" as const
-    },
-    arm7a: {
-      version: "4.2.4",
-      fileName: "mrplayer-v7a-v4.2.4.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.4.apk`,
-      size: "32.5 MB",
-      date: "24/04/2026",
-      platform: "android" as const,
-      variant: "arm7a" as const
     }
   });
 
@@ -58,8 +47,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
 
   const fileNameMap = {
     android: {
-      universal: `${FIRE_HOSTING}/mrplayer-v4.2.4.apk`,
-      arm7a: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.4.apk`,
+      universal: `${FIRE_HOSTING}/mrplayer.apk`,
     },
     projectors: {
       universal: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
@@ -86,12 +74,12 @@ const [exeVersion] = useState<DownloadVersion | null>({
     </div>
   );
 
-  const APKButton = ({ variant, label, version }: { variant: APKVariant; label: string; version: DownloadVersion }) => (
+  const APKButton = ({ label, version }: { label: string; version: DownloadVersion }) => (
     <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
       <h4 className="text-lg font-bold text-white mb-2">{label}</h4>
-      <p className="text-slate-400 text-xs mb-3">{variant === "arm7a" ? "Processadores Antigos (ARMv7)" : "Todos os dispositivos"}</p>
+      <p className="text-slate-400 text-xs mb-3">Compatível com todos os dispositivos Android</p>
       <VersionBadge version={version} />
-      <button onClick={() => handleDownload(version, fileNameMap.android[variant])} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+      <button onClick={() => handleDownload(version, fileNameMap.android.universal)} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
         <Download className="w-4 h-4" /> Baixar
       </button>
     </div>
@@ -120,9 +108,8 @@ const [exeVersion] = useState<DownloadVersion | null>({
           </div>
 
           {activeTab === "android" && (
-            <div className="grid md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
-              <APKButton variant="universal" label="Universal" version={apks.universal} />
-              <APKButton variant="arm7a" label="ARMv7" version={apks.arm7a} />
+            <div className="grid md:grid-cols-1 gap-4 mb-12 max-w-md mx-auto">
+              <APKButton label="Universal (Todos os dispositivos)" version={apks.universal} />
             </div>
           )}
 
