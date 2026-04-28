@@ -35,11 +35,11 @@ function App() {
   });
 
 const [exeVersion] = useState<DownloadVersion | null>({
-    version: "1.0.0",
-    fileName: "mr-player-desktop-setup-v1.0.0.exe",
-    downloadUrl: `${FIRE_HOSTING}/mr-player-desktop-setup-v1.0.0.exe`,
-    size: "4.0 MB",
-    date: "26/04/2026",
+    version: "1.0.1",
+    fileName: "mr-player.exe",
+    downloadUrl: `${FIRE_HOSTING}/mr-player.exe`,
+    size: "16 MB",
+    date: "28/04/2026",
     platform: "windows"
   });
 
@@ -52,7 +52,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
     projectors: {
       universal: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
     },
-    windows: `${FIRE_HOSTING}/mr-player-desktop-setup-v1.0.0.exe`,
+    windows: `${FIRE_HOSTING}/mr-player.exe`,
   };
 
   const handleDownload = (version: DownloadVersion | null, fallbackFile: string) => {
