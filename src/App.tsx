@@ -9,43 +9,32 @@ import {
 } from "lucide-react";
 import { type DownloadVersion } from "./services/versions";
 
-type APKVariant = "arm7a" | "universal";
-
 const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
 
 function App() {
   const [apks] = useState({
     universal: {
-      version: "4.1.2",
-      fileName: "mrplayer-v4.1.2.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v4.1.2.apk`,
-      size: "101 MB",
-      date: "26/04/2026",
+      version: "4.5.1",
+      fileName: "mrplayer.apk",
+      downloadUrl: `${FIRE_HOSTING}/mrplayer.apk`,
+      size: "64 MB",
+      date: "28/04/2026",
       platform: "android" as const,
       variant: "universal" as const
-    },
-    arm7a: {
-      version: "4.2.4",
-      fileName: "mrplayer-v7a-v4.2.4.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.4.apk`,
-      size: "32.5 MB",
-      date: "24/04/2026",
-      platform: "android" as const,
-      variant: "arm7a" as const
     }
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "4.4.1",
-    fileName: "mrplayer-gimbal-v4.4.1.apk",
-    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal-v4.4.1.apk`,
-    size: "52 MB",
-    date: "26/04/2026",
+    version: "4.5.1",
+    fileName: "mrplayer-gimbal.apk",
+    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
+    size: "64 MB",
+    date: "28/04/2026",
     platform: "android",
     variant: "universal"
   });
 
-const [exeVersion] = useState<DownloadVersion | null>({
+  const [exeVersion] = useState<DownloadVersion | null>({
     version: "0.1.8",
     fileName: "Mr-Player_0.1.8_x64-setup.exe",
     downloadUrl: `${FIRE_HOSTING}/Mr-Player_0.1.8_x64-setup.exe`,
@@ -58,11 +47,10 @@ const [exeVersion] = useState<DownloadVersion | null>({
 
   const fileNameMap = {
     android: {
-      universal: `${FIRE_HOSTING}/mrplayer-v4.1.2.apk`,
-      arm7a: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.4.apk`,
+      universal: `${FIRE_HOSTING}/mrplayer.apk`,
     },
     projectors: {
-      universal: `${FIRE_HOSTING}/mrplayer-gimbal-v4.4.1.apk`,
+      universal: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
     },
     windows: `${FIRE_HOSTING}/Mr-Player_0.1.8_x64-setup.exe`,
   };
@@ -86,12 +74,12 @@ const [exeVersion] = useState<DownloadVersion | null>({
     </div>
   );
 
-  const APKButton = ({ variant, label, version }: { variant: APKVariant; label: string; version: DownloadVersion }) => (
+  const APKButton = ({ label, version }: { label: string; version: DownloadVersion }) => (
     <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
       <h4 className="text-lg font-bold text-white mb-2">{label}</h4>
-      <p className="text-slate-400 text-xs mb-3">{variant === "arm7a" ? "Processadores Antigos (ARMv7)" : "Todos os dispositivos"}</p>
+      <p className="text-slate-400 text-xs mb-3">Compatível com todos os dispositivos Android</p>
       <VersionBadge version={version} />
-      <button onClick={() => handleDownload(version, fileNameMap.android[variant])} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+      <button onClick={() => handleDownload(version, fileNameMap.android.universal)} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
         <Download className="w-4 h-4" /> Baixar
       </button>
     </div>
@@ -103,7 +91,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
         <div className="text-center mb-12 md:mb-16">
           <img src="/icon.png" alt="Mr. Player Logo" className="w-24 h-24 mx-auto mb-6 rounded-2xl" />
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Mr. Player</h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência IPTV v0.1.8.</p>
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência em reprodutor de mídia.</p>
         </div>
 
         <div className="mb-8">
@@ -120,9 +108,8 @@ const [exeVersion] = useState<DownloadVersion | null>({
           </div>
 
           {activeTab === "android" && (
-            <div className="grid md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
-              <APKButton variant="universal" label="Universal" version={apks.universal} />
-              <APKButton variant="arm7a" label="ARMv7" version={apks.arm7a} />
+            <div className="grid md:grid-cols-1 gap-4 mb-12 max-w-md mx-auto">
+              <APKButton label="Universal (Todos os dispositivos)" version={apks.universal} />
             </div>
           )}
 
@@ -147,7 +134,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
               <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
                 <Tv className="w-12 h-12 text-purple-400 mx-auto mb-5" />
                 <h3 className="text-xl font-bold text-white mb-3">Projetores</h3>
-                <p className="text-slate-400 text-sm mb-4">Versão otimizada para projetores.</p>
+                <p className="text-slate-400 text-sm mb-4">Desenvolvido para proyectores e dispositivos de tela grande.</p>
                 <VersionBadge version={projectorApk} />
                 <div className="flex justify-center">
                   <button onClick={() => handleDownload(projectorApk, fileNameMap.projectors.universal)} className="px-12 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
