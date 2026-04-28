@@ -36,11 +36,11 @@ function App() {
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "4.4.1",
-    fileName: "mrplayer-gimbal-v4.4.1.apk",
-    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal-v4.4.1.apk`,
-    size: "52 MB",
-    date: "26/04/2026",
+    version: "4.5.0",
+    fileName: "mrplayer-gimbal.apk",
+    downloadUrl: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
+    size: "61 MB",
+    date: "28/04/2026",
     platform: "android",
     variant: "universal"
   });
@@ -62,7 +62,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
       arm7a: `${FIRE_HOSTING}/mrplayer-v7a-v4.2.4.apk`,
     },
     projectors: {
-      universal: `${FIRE_HOSTING}/mrplayer-gimbal-v4.4.1.apk`,
+      universal: `${FIRE_HOSTING}/mrplayer-gimbal.apk`,
     },
     windows: `${FIRE_HOSTING}/mr-player-desktop-setup-v1.0.0.exe`,
   };
@@ -103,7 +103,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
         <div className="text-center mb-12 md:mb-16">
           <img src="/icon.png" alt="Mr. Player Logo" className="w-24 h-24 mx-auto mb-6 rounded-2xl" />
           <h1 className="text-4xl md:text-6xl font-black text-white mb-4">Mr. Player</h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência IPTV v4.2.4.</p>
+          <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto">A melhor experiência em reprodutor de mídia.</p>
         </div>
 
         <div className="mb-8">
@@ -145,7 +145,7 @@ const [exeVersion] = useState<DownloadVersion | null>({
               <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
                 <Tv className="w-12 h-12 text-purple-400 mx-auto mb-5" />
                 <h3 className="text-xl font-bold text-white mb-3">Projetores</h3>
-                <p className="text-slate-400 text-sm mb-4">Versão otimizada para projetores.</p>
+                <p className="text-slate-400 text-sm mb-4">Desenvolvido para proyectores e dispositivos de tela grande.</p>
                 <VersionBadge version={projectorApk} />
                 <button onClick={() => handleDownload(projectorApk, fileNameMap.projectors.universal)} className="w-full md:w-auto md:px-12 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
                   <Download className="w-5 h-5" /> Baixar APK
