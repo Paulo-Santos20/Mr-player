@@ -25,9 +25,9 @@ function App() {
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "4.7.0",
-    fileName: "v4.7.0-gimbal.apk",
-    downloadUrl: `${FIRE_HOSTING}/v4.7.0-gimbal.apk`,
+    version: "4.6.0",
+    fileName: "Mr-Player-Gimbal-v4.6.0.apk",
+    downloadUrl: `${FIRE_HOSTING}/Mr-Player-Gimbal-v4.6.0.apk`,
     size: "76 MB",
     date: "07/05/2026",
     platform: "android",
@@ -50,7 +50,7 @@ function App() {
       universal: `${FIRE_HOSTING}/mrplayer.apk`,
     },
     projectors: {
-      universal: `${FIRE_HOSTING}/mrplayer-gimbal-v4.5.1.apk`,
+      universal: `${FIRE_HOSTING}/Mr-Player-Gimbal-v4.6.0.apk`,
     },
     windows: `${FIRE_HOSTING}/player-setup.exe`,
   };
