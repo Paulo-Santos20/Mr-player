@@ -38,8 +38,8 @@ function App() {
     version: "1.0.6",
     fileName: "player-setup.exe",
     downloadUrl: `${FIRE_HOSTING}/player-setup.exe`,
-    size: "249 MB",
-    date: "05/05/2026",
+    size: "282 MB",
+    date: "06/05/2026",
     platform: "windows"
   });
 
