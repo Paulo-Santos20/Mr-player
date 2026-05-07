@@ -8,10 +8,7 @@ export interface DownloadVersion {
   variant?: "arm7a" | "universal";
 }
 
-const FIRE_HOSTING_URL = "https://mr-player.web.app";
-
-const GITHUB_OWNER = "Paulo-Santos20";
-const GITHUB_TOKEN = import.meta.env.VITE_GITHUB_TOKEN || "";
+const FIRE_HOSTING_URL = "https://iptv-gerenciador.web.app";
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return bytes + " B";
@@ -30,89 +27,29 @@ function formatDate(dateString: string): string {
   });
 }
 
-async function getGitHubFileInfo(
-  owner: string,
-  repo: string,
-  path: string,
-): Promise<{ size: number; date: string } | null> {
-  if (!GITHUB_TOKEN) return null;
-
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1&path=${path}`,
-      {
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-          Accept: "application/vnd.github.v3+json",
-        },
-      },
-    );
-
-    if (response.ok) {
-      const commits = await response.json();
-      const lastCommit = commits[0];
-      return {
-        date: lastCommit?.commit?.author?.date || new Date().toISOString(),
-        size: 0,
-      };
-    }
-  } catch {
-    // Ignore errors
-  }
-  return null;
-}
-
-async function getGitHubReleaseInfo(
-  owner: string,
-  repo: string,
-): Promise<{ version: string; date: string } | null> {
-  if (!GITHUB_TOKEN) return null;
-
-  try {
-    const response = await fetch(
-      `https://api.github.com/repos/${owner}/${repo}/releases/latest`,
-      {
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-          Accept: "application/vnd.github.v3+json",
-        },
-      },
-    );
-
-    if (response.ok) {
-      const release = await response.json();
-      return {
-        version: release.tag_name || "latest",
-        date: release.published_at || new Date().toISOString(),
-      };
-    }
-  } catch {
-    // Ignore errors
-  }
-  return null;
-}
-
 export async function fetchAPKVersion(
   variant: "arm7a" | "universal",
 ): Promise<DownloadVersion | null> {
-  const fileNameMap = {
-    arm7a: "mrplayer-gimbal-v4.2.1.apk",
-    universal: "mrplayer-gimbal-v4.2.1.apk",
-  };
+  const fileName = "v4.7.0-gimbal.apk";
+  const downloadUrl = `${FIRE_HOSTING_URL}/${fileName}`;
 
   try {
-    const githubInfo = await getGitHubFileInfo(
-      GITHUB_OWNER,
-      "TV",
-      `public/${fileNameMap[variant]}`,
-    );
-    const date = githubInfo?.date || new Date().toISOString();
+    const response = await fetch(downloadUrl, { method: "HEAD" });
+    let size = "76 MB";
+    const date = new Date().toISOString();
+
+    if (response.ok) {
+      const contentLength = response.headers.get("content-length");
+      if (contentLength) {
+        size = formatFileSize(parseInt(contentLength, 10));
+      }
+    }
 
     return {
-      version: "4.2.1",
-      fileName: fileNameMap[variant],
-      downloadUrl: `${FIRE_HOSTING_URL}/${fileNameMap[variant]}`,
-      size: githubInfo?.size ? formatFileSize(githubInfo.size) : "N/A",
+      version: "4.7.0",
+      fileName,
+      downloadUrl,
+      size,
       date: formatDate(date),
       platform: "android",
       variant,
@@ -120,10 +57,10 @@ export async function fetchAPKVersion(
   } catch (error) {
     console.error(`Error fetching APK ${variant} version:`, error);
     return {
-      version: "4.2.1",
-      fileName: fileNameMap[variant],
-      downloadUrl: `${FIRE_HOSTING_URL}/${fileNameMap[variant]}`,
-      size: "N/A",
+      version: "4.7.0",
+      fileName,
+      downloadUrl,
+      size: "76 MB",
       date: formatDate(new Date().toISOString()),
       platform: "android",
       variant,
@@ -132,30 +69,14 @@ export async function fetchAPKVersion(
 }
 
 export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
-  try {
-    const githubInfo = await getGitHubReleaseInfo(GITHUB_OWNER, "TV.exe");
-    const version = githubInfo?.version || "latest";
-    const date = githubInfo?.date || new Date().toISOString();
-
-    return {
-      version,
-      fileName: "mrplayer-setup.exe",
-      downloadUrl: `${FIRE_HOSTING_URL}/mrplayer-setup.exe`,
-      size: "N/A",
-      date: formatDate(date),
-      platform: "windows",
-    };
-  } catch (error) {
-    console.error("Error fetching EXE version:", error);
-    return {
-      version: "latest",
-      fileName: "mrplayer-setup.exe",
-      downloadUrl: `${FIRE_HOSTING_URL}/mrplayer-setup.exe`,
-      size: "N/A",
-      date: formatDate(new Date().toISOString()),
-      platform: "windows",
-    };
-  }
+  return {
+    version: "latest",
+    fileName: "mrplayer-setup.exe",
+    downloadUrl: `${FIRE_HOSTING_URL}/mrplayer-setup.exe`,
+    size: "N/A",
+    date: formatDate(new Date().toISOString()),
+    platform: "windows",
+  };
 }
 
 export async function fetchAllVersions(): Promise<{
