@@ -133,7 +133,7 @@ function App() {
             <div className="grid md:grid-cols-1 gap-6 mb-12 max-w-md mx-auto">
               <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
                 <Tv className="w-12 h-12 text-purple-400 mx-auto mb-5" />
-                <h3 className="text-xl font-bold text-white mb-3">Projetores</h3>
+                <h3 className="text-xl font-bold text-white mb-3">Universal</h3>
                 <p className="text-slate-400 text-sm mb-4">Desenvolvido para proyectores e dispositivos de tela grande.</p>
                 <VersionBadge version={projectorApk} />
                 <div className="flex justify-center">
