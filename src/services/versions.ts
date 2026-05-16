@@ -30,7 +30,7 @@ function formatDate(dateString: string): string {
 export async function fetchAPKVersion(
   variant: "arm7a" | "universal",
 ): Promise<DownloadVersion | null> {
-  const fileName = "v4.7.0-gimbal.apk";
+  const fileName = "Mr-Player-Gimbal-v5.2.1.apk";
   const downloadUrl = `${FIRE_HOSTING_URL}/${fileName}`;
 
   try {
@@ -46,7 +46,7 @@ export async function fetchAPKVersion(
     }
 
     return {
-      version: "4.7.0",
+      version: "5.2.1",
       fileName,
       downloadUrl,
       size,
@@ -57,7 +57,7 @@ export async function fetchAPKVersion(
   } catch (error) {
     console.error(`Error fetching APK ${variant} version:`, error);
     return {
-      version: "4.7.0",
+      version: "5.2.1",
       fileName,
       downloadUrl,
       size: "76 MB",

@@ -14,32 +14,32 @@ const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
 function App() {
   const [apks] = useState({
     universal: {
-      version: "4.6.0",
+      version: "5.2.1",
       fileName: "mrplayer.apk",
       downloadUrl: `${FIRE_HOSTING}/mrplayer.apk`,
-      size: "64 MB",
-      date: "07/05/2026",
+      size: "83 MB",
+      date: "15/05/2026",
       platform: "android" as const,
       variant: "universal" as const
     }
   });
 
   const [projectorApk] = useState<DownloadVersion | null>({
-    version: "5.1.1",
-    fileName: "Mr-Player-Gimbal-v5.1.1.apk",
-    downloadUrl: `${FIRE_HOSTING}/Mr-Player-Gimbal-v5.1.1.apk`,
-    size: "40 MB",
-    date: "08/05/2026",
+    version: "5.2.1",
+    fileName: "Mr-Player-Gimbal-v5.2.1.apk",
+    downloadUrl: `${FIRE_HOSTING}/Mr-Player-Gimbal-v5.2.1.apk`,
+    size: "83 MB",
+    date: "15/05/2026",
     platform: "android",
     variant: "universal"
   });
 
   const [exeVersion] = useState<DownloadVersion | null>({
-    version: "1.1.0",
+    version: "1.0.7",
     fileName: "player-setup.exe",
     downloadUrl: `${FIRE_HOSTING}/player-setup.exe`,
-    size: "282 MB",
-    date: "07/05/2026",
+    size: "340 MB",
+    date: "14/05/2026",
     platform: "windows"
   });
 
@@ -50,7 +50,7 @@ function App() {
       universal: `${FIRE_HOSTING}/mrplayer.apk`,
     },
     projectors: {
-      universal: `${FIRE_HOSTING}/Mr-Player-Gimbal-v5.1.1.apk`,
+      universal: `${FIRE_HOSTING}/Mr-Player-Gimbal-v5.2.1.apk`,
     },
     windows: `${FIRE_HOSTING}/player-setup.exe`,
   };
