@@ -81,8 +81,8 @@ export async function fetchAPKVersion(
     };
   }
 
-  const fileName = "Mr-Player-Gimbal-v5.2.4.apk";
-  const downloadUrl = `${FIRE_HOSTING_URL}/${fileName}`;
+  const fileName = "Mr-Player-Gimbal-v5.2.23.apk";
+  const downloadUrl = `${DOWNLOADS_URL}/${fileName}`;
   try {
     const response = await fetch(downloadUrl, { method: "HEAD" });
     let size = "76 MB";
@@ -93,7 +93,7 @@ export async function fetchAPKVersion(
       }
     }
     return {
-      version: "5.2.4",
+      version: "5.2.23",
       fileName,
       downloadUrl,
       size,
@@ -103,7 +103,7 @@ export async function fetchAPKVersion(
     };
   } catch {
     return {
-      version: "5.2.4",
+      version: "5.2.23",
       fileName,
       downloadUrl,
       size: "76 MB",
