@@ -20,6 +20,14 @@ interface VersionJson {
   updated_at: string;
 }
 
+interface ExeVersionJson {
+  version: string;
+  exe: string;
+  size_bytes: number;
+  size_mb: string;
+  updated_at: string;
+}
+
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return bytes + " B";
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
@@ -42,6 +50,16 @@ async function fetchVersionJson(): Promise<VersionJson | null> {
     const res = await fetch(`${DOWNLOADS_URL}/version.json`, { cache: "no-cache" });
     if (!res.ok) return null;
     return await res.json() as VersionJson;
+  } catch {
+    return null;
+  }
+}
+
+async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
+  try {
+    const res = await fetch(`${DOWNLOADS_URL}/version-exe.json`, { cache: "no-cache" });
+    if (!res.ok) return null;
+    return await res.json() as ExeVersionJson;
   } catch {
     return null;
   }
@@ -97,6 +115,21 @@ export async function fetchAPKVersion(
 }
 
 export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
+  const data = await fetchExeVersionJson();
+  if (data) {
+    const size = data.size_mb
+      ? `${data.size_mb} MB`
+      : formatFileSize(data.size_bytes);
+    return {
+      version: data.version,
+      fileName: data.exe,
+      downloadUrl: `${DOWNLOADS_URL}/${data.exe}`,
+      size,
+      date: formatDate(data.updated_at),
+      platform: "windows",
+    };
+  }
+
   const filename = "player-setup.exe";
   const url = `${FIRE_HOSTING_URL}/${filename}`;
   try {
