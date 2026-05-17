@@ -8,7 +8,17 @@ export interface DownloadVersion {
   variant?: "arm7a" | "universal";
 }
 
+const DOWNLOADS_URL = "https://downloads-iptv-gerenciador.web.app";
 const FIRE_HOSTING_URL = "https://iptv-gerenciador.web.app";
+
+interface VersionJson {
+  version: string;
+  variant: string;
+  apk: string;
+  size_bytes: number;
+  size_mb: string;
+  updated_at: string;
+}
 
 function formatFileSize(bytes: number): string {
   if (bytes < 1024) return bytes + " B";
@@ -27,37 +37,55 @@ function formatDate(dateString: string): string {
   });
 }
 
+async function fetchVersionJson(): Promise<VersionJson | null> {
+  try {
+    const res = await fetch(`${DOWNLOADS_URL}/version.json`, { cache: "no-cache" });
+    if (!res.ok) return null;
+    return await res.json() as VersionJson;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchAPKVersion(
   variant: "arm7a" | "universal",
 ): Promise<DownloadVersion | null> {
-  const fileName = "Mr-Player-Gimbal-v5.2.1.apk";
-  const downloadUrl = `${FIRE_HOSTING_URL}/${fileName}`;
+  const data = await fetchVersionJson();
+  if (data) {
+    return {
+      version: data.version,
+      fileName: data.apk,
+      downloadUrl: `${DOWNLOADS_URL}/${data.apk}`,
+      size: data.size_mb ? `${data.size_mb} MB` : formatFileSize(data.size_bytes),
+      date: formatDate(data.updated_at),
+      platform: "android",
+      variant,
+    };
+  }
 
+  const fileName = "Mr-Player-Gimbal-v5.2.4.apk";
+  const downloadUrl = `${FIRE_HOSTING_URL}/${fileName}`;
   try {
     const response = await fetch(downloadUrl, { method: "HEAD" });
     let size = "76 MB";
-    const date = new Date().toISOString();
-
     if (response.ok) {
       const contentLength = response.headers.get("content-length");
       if (contentLength) {
         size = formatFileSize(parseInt(contentLength, 10));
       }
     }
-
     return {
-      version: "5.2.1",
+      version: "5.2.4",
       fileName,
       downloadUrl,
       size,
-      date: formatDate(date),
+      date: formatDate(new Date().toISOString()),
       platform: "android",
       variant,
     };
-  } catch (error) {
-    console.error(`Error fetching APK ${variant} version:`, error);
+  } catch {
     return {
-      version: "5.2.1",
+      version: "5.2.4",
       fileName,
       downloadUrl,
       size: "76 MB",
@@ -69,30 +97,42 @@ export async function fetchAPKVersion(
 }
 
 export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
-  return {
-    version: "latest",
-    fileName: "mrplayer-setup.exe",
-    downloadUrl: `${FIRE_HOSTING_URL}/mrplayer-setup.exe`,
-    size: "N/A",
-    date: formatDate(new Date().toISOString()),
-    platform: "windows",
-  };
+  const filename = "player-setup.exe";
+  const url = `${FIRE_HOSTING_URL}/${filename}`;
+  try {
+    const res = await fetch(url, { method: "HEAD" });
+    let size = "340 MB";
+    if (res.ok) {
+      const cl = res.headers.get("content-length");
+      if (cl) size = formatFileSize(parseInt(cl, 10));
+    }
+    return {
+      version: "1.0.7",
+      fileName: filename,
+      downloadUrl: url,
+      size,
+      date: formatDate(new Date().toISOString()),
+      platform: "windows",
+    };
+  } catch {
+    return {
+      version: "1.0.7",
+      fileName: filename,
+      downloadUrl: url,
+      size: "340 MB",
+      date: formatDate(new Date().toISOString()),
+      platform: "windows",
+    };
+  }
 }
 
 export async function fetchAllVersions(): Promise<{
-  apks: {
-    arm7a: DownloadVersion | null;
-    universal: DownloadVersion | null;
-  };
+  apks: { arm7a: DownloadVersion | null; universal: DownloadVersion | null };
   exe: DownloadVersion | null;
 }> {
-  const [arm7a, universal, exe] = await Promise.all([
-    fetchAPKVersion("arm7a"),
+  const [universal, exe] = await Promise.all([
     fetchAPKVersion("universal"),
     fetchEXEVersion(),
   ]);
-  return {
-    apks: { arm7a, universal },
-    exe,
-  };
+  return { apks: { arm7a: null, universal }, exe };
 }

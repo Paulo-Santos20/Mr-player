@@ -1,63 +1,27 @@
-import { useState } from "react";
-import {
-  Download,
-  Smartphone,
-  Monitor,
-  CheckCircle,
-  Tv,
-  RotateCcw
-} from "lucide-react";
-import { type DownloadVersion } from "./services/versions";
-
-const FIRE_HOSTING = "https://iptv-gerenciador.web.app";
+import { useEffect, useState } from "react";
+import { Download, Smartphone, Monitor, CheckCircle, Tv, RotateCcw, Loader2 } from "lucide-react";
+import { type DownloadVersion, fetchAPKVersion, fetchEXEVersion } from "./services/versions";
 
 function App() {
-  const [apks] = useState({
-    universal: {
-      version: "5.2.1",
-      fileName: "mrplayer.apk",
-      downloadUrl: `${FIRE_HOSTING}/mrplayer.apk`,
-      size: "83 MB",
-      date: "15/05/2026",
-      platform: "android" as const,
-      variant: "universal" as const
-    }
-  });
+  const [apk, setApk] = useState<DownloadVersion | null>(null);
+  const [exe, setExe] = useState<DownloadVersion | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const [projectorApk] = useState<DownloadVersion | null>({
-    version: "5.2.1",
-    fileName: "Mr-Player-Gimbal-v5.2.1.apk",
-    downloadUrl: `${FIRE_HOSTING}/Mr-Player-Gimbal-v5.2.1.apk`,
-    size: "83 MB",
-    date: "15/05/2026",
-    platform: "android",
-    variant: "universal"
-  });
-
-  const [exeVersion] = useState<DownloadVersion | null>({
-    version: "1.0.7",
-    fileName: "player-setup.exe",
-    downloadUrl: `${FIRE_HOSTING}/player-setup.exe`,
-    size: "340 MB",
-    date: "14/05/2026",
-    platform: "windows"
-  });
+  useEffect(() => {
+    Promise.all([
+      fetchAPKVersion("universal"),
+      fetchEXEVersion(),
+    ]).then(([apkData, exeData]) => {
+      setApk(apkData);
+      setExe(exeData);
+      setLoading(false);
+    });
+  }, []);
 
   const [activeTab, setActiveTab] = useState<"android" | "windows" | "projectors">("android");
 
-  const fileNameMap = {
-    android: {
-      universal: `${FIRE_HOSTING}/mrplayer.apk`,
-    },
-    projectors: {
-      universal: `${FIRE_HOSTING}/Mr-Player-Gimbal-v5.2.1.apk`,
-    },
-    windows: `${FIRE_HOSTING}/player-setup.exe`,
-  };
-
-  const handleDownload = (version: DownloadVersion | null, fallbackFile: string) => {
-    const url = version?.downloadUrl || `/${fallbackFile}`;
-    window.location.href = url;
+  const handleDownload = (version: DownloadVersion | null, fallbackUrl: string) => {
+    window.location.href = version?.downloadUrl || fallbackUrl;
   };
 
   const handleClearCache = () => {
@@ -79,11 +43,22 @@ function App() {
       <h4 className="text-lg font-bold text-white mb-2">{label}</h4>
       <p className="text-slate-400 text-xs mb-3">Compatível com todos os dispositivos Android</p>
       <VersionBadge version={version} />
-      <button onClick={() => handleDownload(version, fileNameMap.android.universal)} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+      <button onClick={() => handleDownload(version, version.downloadUrl)} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
         <Download className="w-4 h-4" /> Baixar
       </button>
     </div>
   );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 text-slate-400 animate-spin mx-auto mb-4" />
+          <p className="text-slate-500 text-sm">Carregando informações...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 md:p-8">
@@ -107,21 +82,21 @@ function App() {
             </button>
           </div>
 
-          {activeTab === "android" && (
+          {activeTab === "android" && apk && (
             <div className="grid md:grid-cols-1 gap-4 mb-12 max-w-md mx-auto">
-              <APKButton label="Universal (Todos os dispositivos)" version={apks.universal} />
+              <APKButton label="Universal (Todos os dispositivos)" version={apk} />
             </div>
           )}
 
-          {activeTab === "windows" && exeVersion && (
+          {activeTab === "windows" && exe && (
             <div className="grid md:grid-cols-1 gap-6 mb-12 max-w-md mx-auto">
               <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
                 <Monitor className="w-12 h-12 text-sky-400 mx-auto mb-5" />
                 <h3 className="text-xl font-bold text-white mb-3">Windows</h3>
                 <p className="text-slate-400 text-sm mb-4">Assista direto do seu PC.</p>
-                <VersionBadge version={exeVersion} />
+                <VersionBadge version={exe} />
                 <div className="flex justify-center">
-                  <button onClick={() => handleDownload(exeVersion, fileNameMap.windows)} className="px-12 py-4 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+                  <button onClick={() => handleDownload(exe, exe.downloadUrl)} className="px-12 py-4 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
                     <Download className="w-5 h-5" /> Baixar EXE
                   </button>
                 </div>
@@ -129,15 +104,15 @@ function App() {
             </div>
           )}
 
-          {activeTab === "projectors" && projectorApk && (
+          {activeTab === "projectors" && apk && (
             <div className="grid md:grid-cols-1 gap-6 mb-12 max-w-md mx-auto">
               <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
                 <Tv className="w-12 h-12 text-purple-400 mx-auto mb-5" />
                 <h3 className="text-xl font-bold text-white mb-3">Universal</h3>
-                <p className="text-slate-400 text-sm mb-4">Desenvolvido para proyectores e dispositivos de tela grande.</p>
-                <VersionBadge version={projectorApk} />
+                <p className="text-slate-400 text-sm mb-4">Desenvolvido para projetores e dispositivos de tela grande.</p>
+                <VersionBadge version={apk} />
                 <div className="flex justify-center">
-                  <button onClick={() => handleDownload(projectorApk, fileNameMap.projectors.universal)} className="px-12 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+                  <button onClick={() => handleDownload(apk, apk.downloadUrl)} className="px-12 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
                     <Download className="w-5 h-5" /> Baixar APK
                   </button>
                 </div>
