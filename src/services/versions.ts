@@ -9,7 +9,6 @@ export interface DownloadVersion {
 }
 
 const DOWNLOADS_URL = "https://downloads-iptv-gerenciador.web.app";
-const FIRE_HOSTING_URL = "https://iptv-gerenciador.web.app";
 
 interface VersionJson {
   version: string;
