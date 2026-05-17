@@ -9,7 +9,6 @@ export interface DownloadVersion {
 }
 
 const DOWNLOADS_URL = "https://downloads-iptv-gerenciador.web.app";
-const FIRE_HOSTING_URL = "https://iptv-gerenciador.web.app";
 
 interface VersionJson {
   version: string;
@@ -131,7 +130,7 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
   }
 
   const filename = "player-setup.exe";
-  const url = `${FIRE_HOSTING_URL}/${filename}`;
+  const url = `${DOWNLOADS_URL}/${filename}`;
   try {
     const res = await fetch(url, { method: "HEAD" });
     let size = "340 MB";
