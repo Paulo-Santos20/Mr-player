@@ -57,7 +57,7 @@ async function fetchVersionJson(): Promise<VersionJson | null> {
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
   try {
-    const res = await fetch(`${DOWNLOADS_URL}/version-exe.json`, { cache: "no-cache" });
+    const res = await fetch(`${DOWNLOADS_URL}/version-exe.json?t=${Date.now()}`, { cache: "no-store" });
     if (!res.ok) return null;
     return await res.json() as ExeVersionJson;
   } catch {
@@ -129,34 +129,7 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
       platform: "windows",
     };
   }
-
-  const filename = "player-setup.exe";
-  const url = `${FIRE_HOSTING_URL}/${filename}`;
-  try {
-    const res = await fetch(url, { method: "HEAD" });
-    let size = "340 MB";
-    if (res.ok) {
-      const cl = res.headers.get("content-length");
-      if (cl) size = formatFileSize(parseInt(cl, 10));
-    }
-    return {
-      version: "1.0.7",
-      fileName: filename,
-      downloadUrl: url,
-      size,
-      date: formatDate(new Date().toISOString()),
-      platform: "windows",
-    };
-  } catch {
-    return {
-      version: "1.0.7",
-      fileName: filename,
-      downloadUrl: url,
-      size: "340 MB",
-      date: formatDate(new Date().toISOString()),
-      platform: "windows",
-    };
-  }
+  return null;
 }
 
 export async function fetchAllVersions(): Promise<{
