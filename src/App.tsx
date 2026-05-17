@@ -88,31 +88,18 @@ function App() {
             </div>
           )}
 
-          {activeTab === "windows" && (
+          {activeTab === "windows" && exe && (
             <div className="grid md:grid-cols-1 gap-6 mb-12 max-w-md mx-auto">
               <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
                 <Monitor className="w-12 h-12 text-sky-400 mx-auto mb-5" />
                 <h3 className="text-xl font-bold text-white mb-3">Windows</h3>
                 <p className="text-slate-400 text-sm mb-4">Assista direto do seu PC.</p>
-                {exe ? (
-                  <>
-                    <VersionBadge version={exe} />
-                    <div className="flex justify-center">
-                      <button onClick={() => handleDownload(exe, exe.downloadUrl)} className="px-12 py-4 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
-                        <Download className="w-5 h-5" /> Baixar EXE
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <a
-                    href="https://downloads-iptv-gerenciador.web.app/"
-                    target="_blank"
-                    rel="noopener"
-                    className="inline-block px-12 py-4 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-full"
-                  >
-                    Ver Downloads
-                  </a>
-                )}
+                <VersionBadge version={exe} />
+                <div className="flex justify-center">
+                  <button onClick={() => handleDownload(exe, exe.downloadUrl)} className="px-12 py-4 bg-sky-500 hover:bg-sky-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
+                    <Download className="w-5 h-5" /> Baixar EXE
+                  </button>
+                </div>
               </div>
             </div>
           )}
