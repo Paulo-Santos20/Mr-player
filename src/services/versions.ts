@@ -44,9 +44,12 @@ function formatDate(dateString: string): string {
   });
 }
 
+// Dev: fetch direto do Firebase (CORS ignorado em dev). Prod: Vercel proxy (mesmo origin, sem CORS).
+const API_BASE = import.meta.env.DEV ? DOWNLOADS_URL : '';
+
 async function fetchVersionJson(): Promise<VersionJson | null> {
   try {
-    const res = await fetch(`${DOWNLOADS_URL}/version.json`, { cache: "no-cache" });
+    const res = await fetch(`${API_BASE}/api/version`, { cache: "no-cache" });
     if (!res.ok) return null;
     return await res.json() as VersionJson;
   } catch {
@@ -56,7 +59,7 @@ async function fetchVersionJson(): Promise<VersionJson | null> {
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
   try {
-    const res = await fetch(`${DOWNLOADS_URL}/version-exe.json`, { cache: "no-cache" });
+    const res = await fetch(`${API_BASE}/api/version-exe`, { cache: "no-cache" });
     if (!res.ok) return null;
     return await res.json() as ExeVersionJson;
   } catch {
