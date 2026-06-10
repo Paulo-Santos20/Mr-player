@@ -63,7 +63,10 @@ async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
     const res = await fetch(`${import.meta.env.DEV ? `https://api.github.com/repos/${GITHUB_REPO}` : ''}/api/version-exe`, { cache: "no-cache" });
     if (!res.ok) return null;
     const release = await res.json();
-    const exeAsset = release.assets?.find((a: any) => a.name?.includes('Mr.Player') && a.name?.endsWith('.exe'));
+    const tagVersion = release.tag_name.replace(/^v/, '');
+    const exeAsset = release.assets?.find((a: any) =>
+      a.name?.includes(tagVersion) && a.name?.endsWith('.exe')
+    );
     if (!exeAsset) return null;
     return {
       version: release.tag_name.replace(/^v/, ''),
@@ -142,8 +145,9 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
     };
   }
 
-  const filename = "player-setup.exe";
-  const url = `https://github.com/${GITHUB_REPO}/releases/latest/download/${filename}`;
+  const fallbackVersion = "1.0.7";
+  const filename = `Mr.Player_${fallbackVersion}_x64-setup.exe`;
+  const url = `https://github.com/${GITHUB_REPO}/releases/download/v${fallbackVersion}/${filename}`;
   try {
     const res = await fetch(url, { method: "HEAD" });
     let size = "340 MB";
@@ -152,7 +156,7 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
       if (cl) size = formatFileSize(parseInt(cl, 10));
     }
     return {
-      version: "1.0.7",
+      version: fallbackVersion,
       fileName: filename,
       downloadUrl: url,
       size,
@@ -161,7 +165,7 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
     };
   } catch {
     return {
-      version: "1.0.7",
+      version: fallbackVersion,
       fileName: filename,
       downloadUrl: url,
       size: "340 MB",
