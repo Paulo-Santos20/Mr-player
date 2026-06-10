@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Download, Smartphone, Monitor, CheckCircle, Tv, RotateCcw, Loader2 } from "lucide-react";
+import { Download, Smartphone, Monitor, CheckCircle, Loader2 } from "lucide-react";
 import { type DownloadVersion, fetchAPKVersion, fetchEXEVersion } from "./services/versions";
 
 function App() {
@@ -18,15 +18,10 @@ function App() {
     });
   }, []);
 
-  const [activeTab, setActiveTab] = useState<"android" | "windows" | "projectors">("android");
+  const [activeTab, setActiveTab] = useState<"android" | "windows">("android");
 
   const handleDownload = (version: DownloadVersion | null, fallbackUrl: string) => {
     window.location.href = version?.downloadUrl || fallbackUrl;
-  };
-
-  const handleClearCache = () => {
-    localStorage.clear();
-    window.location.reload();
   };
 
   const VersionBadge = ({ version }: { version: DownloadVersion }) => (
@@ -35,17 +30,6 @@ function App() {
       <span>{version.date}</span>
       <span>•</span>
       <span>{version.size}</span>
-    </div>
-  );
-
-  const APKButton = ({ label, version }: { label: string; version: DownloadVersion }) => (
-    <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
-      <h4 className="text-lg font-bold text-white mb-2">{label}</h4>
-      <p className="text-slate-400 text-xs mb-3">Compatível com todos os dispositivos Android</p>
-      <VersionBadge version={version} />
-      <button onClick={() => handleDownload(version, version.downloadUrl)} className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
-        <Download className="w-4 h-4" /> Baixar
-      </button>
     </div>
   );
 
@@ -77,14 +61,29 @@ function App() {
             <button onClick={() => setActiveTab("windows")} className={`px-6 py-3 rounded-full font-bold flex items-center gap-2 ${activeTab === "windows" ? "bg-sky-500 text-white" : "bg-white/10 text-slate-400"}`}>
               <Monitor className="w-5 h-5" /> Windows
             </button>
-            <button onClick={() => setActiveTab("projectors")} className={`px-6 py-3 rounded-full font-bold flex items-center gap-2 ${activeTab === "projectors" ? "bg-purple-500 text-white" : "bg-white/10 text-slate-400"}`}>
-              <Tv className="w-5 h-5" /> Projetores
-            </button>
           </div>
 
-          {activeTab === "android" && apk && (
-            <div className="grid md:grid-cols-1 gap-4 mb-12 max-w-md mx-auto">
-              <APKButton label="Universal (Todos os dispositivos)" version={apk} />
+          {activeTab === "android" && (
+            <div className="grid md:grid-cols-2 gap-4 mb-12 max-w-2xl mx-auto">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                <h4 className="text-lg font-bold text-white mb-2">Universal</h4>
+                <p className="text-slate-400 text-xs mb-3">Compatível com todos os dispositivos Android</p>
+                {apk && <VersionBadge version={apk} />}
+                <button
+                  onClick={() => apk && handleDownload(apk, apk.downloadUrl)}
+                  disabled={!apk}
+                  className={`w-full py-3 font-bold rounded-full flex items-center justify-center gap-2 ${apk ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-slate-700 text-slate-400 cursor-not-allowed'}`}
+                >
+                  <Download className="w-4 h-4" /> {apk ? 'Baixar' : 'Carregando...'}
+                </button>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-center">
+                <h4 className="text-lg font-bold text-white mb-2">ARM7A</h4>
+                <p className="text-slate-400 text-xs mb-3">Para dispositivos com processador ARM de 32 bits</p>
+                <button disabled className="w-full py-3 bg-slate-700 text-slate-400 font-bold rounded-full flex items-center justify-center gap-2 cursor-not-allowed">
+                  <Download className="w-4 h-4" /> Indisponível
+                </button>
+              </div>
             </div>
           )}
 
@@ -104,24 +103,7 @@ function App() {
             </div>
           )}
 
-          {activeTab === "projectors" && apk && (
-            <div className="grid md:grid-cols-1 gap-6 mb-12 max-w-md mx-auto">
-              <div className="bg-white/5 border border-white/10 rounded-3xl p-8 text-center">
-                <Tv className="w-12 h-12 text-purple-400 mx-auto mb-5" />
-                <h3 className="text-xl font-bold text-white mb-3">Universal</h3>
-                <p className="text-slate-400 text-sm mb-4">Desenvolvido para projetores e dispositivos de tela grande.</p>
-                <VersionBadge version={apk} />
-                <div className="flex justify-center">
-                  <button onClick={() => handleDownload(apk, apk.downloadUrl)} className="px-12 py-4 bg-purple-500 hover:bg-purple-600 text-white font-bold rounded-full flex items-center justify-center gap-2">
-                    <Download className="w-5 h-5" /> Baixar APK
-                  </button>
-                </div>
-                <button onClick={handleClearCache} className="mt-3 text-xs text-slate-500 underline flex items-center justify-center gap-1">
-                  <RotateCcw className="w-3 h-3" /> Limpar Cache
-                </button>
-              </div>
-            </div>
-          )}
+
         </div>
 
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8">

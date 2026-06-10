@@ -4,6 +4,7 @@
   "framework": "vite",
   "public": true,
   "rewrites": [
-    { "source": "/api/version", "destination": "https://downloads-iptv-gerenciador.web.app/version.json" }
+    { "source": "/api/version", "destination": "https://downloads-iptv-gerenciador.web.app/version.json" },
+    { "source": "/api/version-exe", "destination": "https://api.github.com/repos/Paulo-Santos20/mr-player-desktop/releases/latest" }
   ]
 }

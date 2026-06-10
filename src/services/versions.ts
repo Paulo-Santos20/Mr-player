@@ -60,14 +60,18 @@ async function fetchVersionJson(): Promise<VersionJson | null> {
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
   try {
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
+    const res = await fetch(`${import.meta.env.DEV ? `https://api.github.com/repos/${GITHUB_REPO}` : ''}/api/version-exe`, { cache: "no-cache" });
     if (!res.ok) return null;
     const release = await res.json();
-    const asset = release.assets?.find((a: any) => a.name === "version-exe.json");
-    if (!asset) return null;
-    const verRes = await fetch(asset.browser_download_url, { cache: "no-cache" });
-    if (!verRes.ok) return null;
-    return await verRes.json() as ExeVersionJson;
+    const exeAsset = release.assets?.find((a: any) => a.name?.includes('Mr.Player') && a.name?.endsWith('.exe'));
+    if (!exeAsset) return null;
+    return {
+      version: release.tag_name.replace(/^v/, ''),
+      exe: exeAsset.name,
+      size_bytes: exeAsset.size,
+      size_mb: '',
+      updated_at: exeAsset.updated_at || release.published_at,
+    };
   } catch {
     return null;
   }
