@@ -60,20 +60,15 @@ async function fetchVersionJson(): Promise<VersionJson | null> {
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
   try {
-    const res = await fetch(`${import.meta.env.DEV ? `https://api.github.com/repos/${GITHUB_REPO}` : ''}/api/version-exe`, { cache: "no-cache" });
+    const res = await fetch(`/api/version-exe`, { cache: "no-cache" });
     if (!res.ok) return null;
-    const release = await res.json();
-    const tagVersion = release.tag_name.replace(/^v/, '');
-    const exeAsset = release.assets?.find((a: any) =>
-      a.name?.includes(tagVersion) && a.name?.endsWith('.exe')
-    );
-    if (!exeAsset) return null;
+    const data = await res.json();
     return {
-      version: release.tag_name.replace(/^v/, ''),
-      exe: exeAsset.name,
-      size_bytes: exeAsset.size,
+      version: data.version,
+      exe: data.exe,
+      size_bytes: data.size_bytes,
       size_mb: '',
-      updated_at: exeAsset.updated_at || release.published_at,
+      updated_at: data.updated_at,
     };
   } catch {
     return null;
