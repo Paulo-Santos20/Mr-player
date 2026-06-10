@@ -4,7 +4,6 @@
   "framework": "vite",
   "public": true,
   "rewrites": [
-    { "source": "/api/version-exe", "destination": "https://downloads-iptv-gerenciador.web.app/version-exe.json" },
     { "source": "/api/version", "destination": "https://downloads-iptv-gerenciador.web.app/version.json" }
   ]
 }

@@ -9,6 +9,7 @@ export interface DownloadVersion {
 }
 
 const DOWNLOADS_URL = "https://downloads-iptv-gerenciador.web.app";
+const GITHUB_REPO = "Paulo-Santos20/mr-player-desktop";
 
 interface VersionJson {
   version: string;
@@ -59,9 +60,14 @@ async function fetchVersionJson(): Promise<VersionJson | null> {
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
   try {
-    const res = await fetch(`${API_BASE}/api/version-exe`, { cache: "no-cache" });
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`);
     if (!res.ok) return null;
-    return await res.json() as ExeVersionJson;
+    const release = await res.json();
+    const asset = release.assets?.find((a: any) => a.name === "version-exe.json");
+    if (!asset) return null;
+    const verRes = await fetch(asset.browser_download_url, { cache: "no-cache" });
+    if (!verRes.ok) return null;
+    return await verRes.json() as ExeVersionJson;
   } catch {
     return null;
   }
@@ -125,7 +131,7 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
     return {
       version: data.version,
       fileName: data.exe,
-      downloadUrl: `${DOWNLOADS_URL}/${data.exe}`,
+      downloadUrl: `https://github.com/${GITHUB_REPO}/releases/download/v${data.version}/${data.exe}`,
       size,
       date: formatDate(data.updated_at),
       platform: "windows",
@@ -133,7 +139,7 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
   }
 
   const filename = "player-setup.exe";
-  const url = `${DOWNLOADS_URL}/${filename}`;
+  const url = `https://github.com/${GITHUB_REPO}/releases/latest/download/${filename}`;
   try {
     const res = await fetch(url, { method: "HEAD" });
     let size = "340 MB";
