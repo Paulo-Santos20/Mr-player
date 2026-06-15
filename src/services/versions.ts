@@ -76,27 +76,26 @@ function releaseToApkJson(release: GithubRelease): VersionJson | null {
   };
 }
 
-function releaseToExeJson(release: GithubRelease): ExeVersionJson | null {
-  const version = release.tag_name.replace(/^v/, '');
-  const exeName = `Mr.Player_${version}_x64-setup.exe`;
-  const asset = release.assets?.find((a: any) => a.name === exeName);
-  return {
-    version,
-    exe: exeName,
-    size_bytes: asset?.size || 0,
-    size_mb: asset ? (asset.size / 1048576).toFixed(1) : '?',
-    updated_at: release.published_at,
-  };
-}
-
 async function fetchVersionJson(): Promise<VersionJson | null> {
   const release = await fetchGithubRelease(GITHUB_APK_REPO);
   return release ? releaseToApkJson(release) : null;
 }
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
-  const release = await fetchGithubRelease(GITHUB_EXE_REPO);
-  return release ? releaseToExeJson(release) : null;
+  try {
+    const res = await fetch(`/api/version-exe`, { cache: "no-cache" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return {
+      version: data.version,
+      exe: data.exe,
+      size_bytes: data.size_bytes,
+      size_mb: data.size_mb || '',
+      updated_at: data.updated_at,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export async function fetchAPKVersion(
