@@ -8,15 +8,8 @@ export interface DownloadVersion {
   variant?: "arm7a" | "universal";
 }
 
-const GITHUB_APK_REPO = "Paulo-Santos20/iptv-mobile-gimbal";
+const FIREBASE_DOWNLOADS = "https://downloads-iptv-gerenciador.web.app";
 const GITHUB_EXE_REPO = "Paulo-Santos20/mr-player-desktop";
-const GITHUB_API = "https://api.github.com/repos";
-
-interface GithubRelease {
-  tag_name: string;
-  published_at: string;
-  assets: Array<{ name: string; size: number }>;
-}
 
 interface VersionJson {
   version: string;
@@ -52,33 +45,14 @@ function formatDate(dateString: string): string {
   });
 }
 
-async function fetchGithubRelease(repo: string): Promise<GithubRelease | null> {
+async function fetchVersionJson(): Promise<VersionJson | null> {
   try {
-    const res = await fetch(`${GITHUB_API}/${repo}/releases/latest`);
+    const res = await fetch(`${FIREBASE_DOWNLOADS}/version.json`);
     if (!res.ok) return null;
-    return await res.json() as GithubRelease;
+    return await res.json() as VersionJson;
   } catch {
     return null;
   }
-}
-
-function releaseToApkJson(release: GithubRelease): VersionJson | null {
-  const version = release.tag_name.replace(/^v/, '');
-  const apkName = `Mr-Player-Gimbal-v${version}.apk`;
-  const asset = release.assets?.find((a: any) => a.name === apkName);
-  return {
-    version,
-    variant: 'universal',
-    apk: apkName,
-    size_bytes: asset?.size || 0,
-    size_mb: asset ? (asset.size / 1048576).toFixed(1) : '?',
-    updated_at: release.published_at,
-  };
-}
-
-async function fetchVersionJson(): Promise<VersionJson | null> {
-  const release = await fetchGithubRelease(GITHUB_APK_REPO);
-  return release ? releaseToApkJson(release) : null;
 }
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
@@ -107,7 +81,7 @@ export async function fetchAPKVersion(
     return {
       version,
       fileName: data.apk,
-      downloadUrl: `https://github.com/${GITHUB_APK_REPO}/releases/download/v${version}/${data.apk}`,
+      downloadUrl: `${FIREBASE_DOWNLOADS}/${data.apk}`,
       size: data.size_mb ? `${data.size_mb} MB` : formatFileSize(data.size_bytes),
       date: formatDate(data.updated_at),
       platform: "android",
@@ -115,13 +89,13 @@ export async function fetchAPKVersion(
     };
   }
 
-  const fileName = "Mr-Player-Gimbal-v5.2.23.apk";
-  const downloadUrl = `https://github.com/${GITHUB_APK_REPO}/releases/download/v5.2.23/${fileName}`;
+  const fileName = "Mr-Player-Gimbal-v5.2.64.apk";
+  const downloadUrl = `${FIREBASE_DOWNLOADS}/${fileName}`;
   return {
-    version: "5.2.23",
+    version: "5.2.64",
     fileName,
     downloadUrl,
-    size: "76 MB",
+    size: "78 MB",
     date: formatDate(new Date().toISOString()),
     platform: "android",
     variant,
