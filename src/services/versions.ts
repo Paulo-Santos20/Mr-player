@@ -8,7 +8,7 @@ export interface DownloadVersion {
   variant?: "arm7a" | "universal";
 }
 
-const FIREBASE_DOWNLOADS = "https://downloads-iptv-gerenciador.web.app";
+const FIREBASE_DOWNLOADS = "https://dl-iptv-gimbal-6ba5f1.web.app";
 const GITHUB_EXE_REPO = "Paulo-Santos20/mr-player-desktop";
 
 interface VersionJson {
@@ -89,10 +89,10 @@ export async function fetchAPKVersion(
     };
   }
 
-  const fileName = "Mr-Player-Gimbal-v5.2.64.apk";
+  const fileName = "Mr-Player-Gimbal-v5.2.61.apk";
   const downloadUrl = `${FIREBASE_DOWNLOADS}/${fileName}`;
   return {
-    version: "5.2.64",
+    version: "5.2.61",
     fileName,
     downloadUrl,
     size: "78 MB",
