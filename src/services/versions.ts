@@ -8,15 +8,13 @@ export interface DownloadVersion {
   variant?: "arm7a" | "universal";
 }
 
-const FIREBASE_DOWNLOADS = "https://dl-iptv-gimbal-6ba5f1.web.app";
+const GITHUB_APK_REPO = "Paulo-Santos20/tv-gimbal";
 const GITHUB_EXE_REPO = "Paulo-Santos20/mr-player-desktop";
 
-interface VersionJson {
+interface ApkVersionJson {
   version: string;
-  variant: string;
   apk: string;
   size_bytes: number;
-  size_mb: string;
   updated_at: string;
 }
 
@@ -45,11 +43,11 @@ function formatDate(dateString: string): string {
   });
 }
 
-async function fetchVersionJson(): Promise<VersionJson | null> {
+async function fetchApkVersionJson(): Promise<ApkVersionJson | null> {
   try {
-    const res = await fetch(`${FIREBASE_DOWNLOADS}/version.json`);
+    const res = await fetch(`/api/version-apk`, { cache: "no-cache" });
     if (!res.ok) return null;
-    return await res.json() as VersionJson;
+    return await res.json() as ApkVersionJson;
   } catch {
     return null;
   }
@@ -75,14 +73,14 @@ async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
 export async function fetchAPKVersion(
   variant: "arm7a" | "universal",
 ): Promise<DownloadVersion | null> {
-  const data = await fetchVersionJson();
+  const data = await fetchApkVersionJson();
   if (data) {
     const version = data.version;
     return {
       version,
       fileName: data.apk,
-      downloadUrl: `${FIREBASE_DOWNLOADS}/${data.apk}`,
-      size: data.size_mb ? `${data.size_mb} MB` : formatFileSize(data.size_bytes),
+      downloadUrl: `https://github.com/${GITHUB_APK_REPO}/releases/download/v${version}/${data.apk}`,
+      size: formatFileSize(data.size_bytes),
       date: formatDate(data.updated_at),
       platform: "android",
       variant,
@@ -90,7 +88,7 @@ export async function fetchAPKVersion(
   }
 
   const fileName = "Mr-Player-Gimbal-v5.2.61.apk";
-  const downloadUrl = `${FIREBASE_DOWNLOADS}/${fileName}`;
+  const downloadUrl = `https://github.com/${GITHUB_APK_REPO}/releases/download/v5.2.61/${fileName}`;
   return {
     version: "5.2.61",
     fileName,
