@@ -1,3 +1,117 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply antialiased bg-brand-bg text-brand-text;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    @apply bg-green-500/30;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] shadow-xl shadow-black/20;
+  }
+
+  .glass-strong {
+    @apply bg-white/[0.06] backdrop-blur-2xl border border-white/[0.08] shadow-xl shadow-black/20;
+  }
+
+  .glass-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .glass-hover:hover {
+    @apply bg-white/[0.08] border-white/[0.12] shadow-2xl shadow-black/30;
+    transform: translateY(-2px);
+  }
+
+  .glass-card {
+    @apply glass glass-hover rounded-2xl;
+  }
+
+  .glass-card-strong {
+    @apply glass-strong glass-hover rounded-2xl;
+  }
+
+  .btn-primary {
+    @apply relative overflow-hidden font-bold rounded-full transition-all duration-200
+           flex items-center justify-center gap-2;
+  }
+
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-200 rounded-full;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  }
+
+  .btn-primary:hover::before {
+    @apply opacity-100;
+  }
+
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  .tab-active {
+    @apply bg-white/10 text-white shadow-lg shadow-black/20;
+  }
+
+  .tab-inactive {
+    @apply text-white/40 hover:text-white/70;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-white/90 to-white/70;
+  }
+
+  .glow-green {
+    animation: glowPulse 3s ease-in-out infinite alternate;
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-safe\:animate-fade-in,
+  .motion-safe\:animate-fade-in-up,
+  .motion-safe\:animate-glow-pulse,
+  .motion-safe\:animate-float,
+  .motion-safe\:animate-spin,
+  .motion-safe\:animate-pulse {
+    animation: none !important;
+  }
+
+  .glow-green {
+    animation: none !important;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+  }
+}

@@ -117,13 +117,13 @@ export async function fetchEXEVersion(): Promise<DownloadVersion | null> {
     };
   }
 
-  const filename = "Mr.Player_1.0.7_x64-setup.exe";
-  const downloadUrl = `https://github.com/${GITHUB_EXE_REPO}/releases/download/v1.0.7/${filename}`;
+  const filename = "Mr.Player_1.0.115_x64-setup.exe";
+  const downloadUrl = `https://github.com/${GITHUB_EXE_REPO}/releases/download/v1.0.115/${filename}`;
   return {
-    version: "1.0.7",
+    version: "1.0.115",
     fileName: filename,
     downloadUrl,
-    size: "340 MB",
+    size: formatFileSize(71010884),
     date: formatDate(new Date().toISOString()),
     platform: "windows",
   };
