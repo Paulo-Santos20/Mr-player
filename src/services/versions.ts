@@ -8,7 +8,7 @@ export interface DownloadVersion {
   variant?: "arm7a" | "universal";
 }
 
-const GITHUB_APK_REPO = "Paulo-Santos20/tv-gimbal";
+const GITHUB_APK_REPO = "Paulo-Santos20/MrPlayer-releases";
 const GITHUB_EXE_REPO = "Paulo-Santos20/mr-player-desktop";
 
 interface ApkVersionJson {
@@ -87,13 +87,13 @@ export async function fetchAPKVersion(
     };
   }
 
-  const fileName = "Mr-Player-Gimbal-v5.2.61.apk";
-  const downloadUrl = `https://github.com/${GITHUB_APK_REPO}/releases/download/v5.2.61/${fileName}`;
+  const fileName = "Mr-Player-Gimbal-v5.2.86.apk";
+  const downloadUrl = `https://github.com/${GITHUB_APK_REPO}/releases/download/v5.2.86/${fileName}`;
   return {
-    version: "5.2.61",
+    version: "5.2.86",
     fileName,
     downloadUrl,
-    size: "78 MB",
+    size: "81.4 MB",
     date: formatDate(new Date().toISOString()),
     platform: "android",
     variant,
