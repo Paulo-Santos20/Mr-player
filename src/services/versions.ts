@@ -9,7 +9,7 @@ export interface DownloadVersion {
 }
 
 const GITHUB_APK_REPO = "Paulo-Santos20/MrPlayer-releases";
-const GITHUB_EXE_REPO = "Paulo-Santos20/mr-player-desktop";
+const GITHUB_EXE_REPO = "Paulo-Santos20/MrPlayer-releases";
 
 interface ApkVersionJson {
   version: string;

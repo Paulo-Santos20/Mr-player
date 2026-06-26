@@ -1,7 +1,6 @@
 export default async function handler(req, res) {
   const r = await fetch(
-    'https://api.github.com/repos/Paulo-Santos20/mr-player-desktop/releases/latest',
-    { headers: { Authorization: 'Bearer ' + process.env.GITHUB_TOKEN } }
+    'https://api.github.com/repos/Paulo-Santos20/MrPlayer-releases/releases/latest'
   );
   if (!r.ok) return res.status(502).json({ error: 'GitHub API failed' });
 
