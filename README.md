@@ -1,10 +1,10 @@
-# Mr. Player
+# Mr. Player — Landing Page
 
-Sistema de downloads para o reprodutor Mr. Player.
+Página oficial de downloads do Mr. Player.
 
 ## Downloads
 
-- **Android & TV**: APK para dispositivos Android
+- **Android**: APK para dispositivos Android
 - **Windows**: Instalador para PCs Windows
 
 ## Tecnologias
