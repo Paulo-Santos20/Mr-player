@@ -2,24 +2,44 @@
   "name": "mr-player",
   "private": true,
   "version": "4.2.5",
+  "description": "Página oficial de downloads do Mr. Player. Baixe o APK para Android/TV e instalador para Windows.",
   "type": "module",
+  "author": {
+    "name": "Mr. Player"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paulo-Santos20/Mr-player.git"
+  },
+  "homepage": "https://mr-player.vercel.app",
+  "bugs": {
+    "url": "https://github.com/Paulo-Santos20/Mr-player/issues"
+  },
+  "browserslist": [
+    "chrome >= 56",
+    "> 0.5%",
+    "not dead"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "lucide-react": "^0.294.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "lucide-react": "^0.294.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-legacy": "^5.4.3",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
+    "terser": "^5.48.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.10"
   }

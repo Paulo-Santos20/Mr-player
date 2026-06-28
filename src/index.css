@@ -25,11 +25,20 @@
 
 @layer components {
   .glass {
-    @apply bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] shadow-xl shadow-black/20;
+    @apply bg-white/[0.06] backdrop-blur-2xl border border-white/[0.06] shadow-xl shadow-black/20;
   }
 
   .glass-strong {
-    @apply bg-white/[0.06] backdrop-blur-2xl border border-white/[0.08] shadow-xl shadow-black/20;
+    @apply bg-white/[0.08] backdrop-blur-2xl border border-white/[0.08] shadow-xl shadow-black/20;
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+    .glass {
+      @apply bg-white/[0.08];
+    }
+    .glass-strong {
+      @apply bg-white/[0.12];
+    }
   }
 
   .glass-hover {

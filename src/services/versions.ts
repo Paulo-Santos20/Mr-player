@@ -43,10 +43,23 @@ function formatDate(dateString: string): string {
   });
 }
 
-async function fetchApkVersionJson(): Promise<ApkVersionJson | null> {
+async function fetchWithTimeout(url: string, timeoutMs = 10000): Promise<Response | null> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const res = await fetch(`/api/version-apk`, { cache: "no-cache" });
-    if (!res.ok) return null;
+    const res = await fetch(url, { cache: "no-cache", signal: controller.signal });
+    return res;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function fetchApkVersionJson(): Promise<ApkVersionJson | null> {
+  const res = await fetchWithTimeout(`/api/version-apk`);
+  if (!res || !res.ok) return null;
+  try {
     return await res.json() as ApkVersionJson;
   } catch {
     return null;
@@ -54,9 +67,9 @@ async function fetchApkVersionJson(): Promise<ApkVersionJson | null> {
 }
 
 async function fetchExeVersionJson(): Promise<ExeVersionJson | null> {
+  const res = await fetchWithTimeout(`/api/version-exe`);
+  if (!res || !res.ok) return null;
   try {
-    const res = await fetch(`/api/version-exe`, { cache: "no-cache" });
-    if (!res.ok) return null;
     const data = await res.json();
     return {
       version: data.version,

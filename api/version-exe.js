@@ -1,4 +1,6 @@
 export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
   const r = await fetch(
     'https://api.github.com/repos/Paulo-Santos20/MrPlayer-releases/releases/latest'
   );

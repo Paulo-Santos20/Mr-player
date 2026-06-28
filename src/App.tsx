@@ -45,7 +45,7 @@ function App() {
   );
 
   const VersionBadge = ({ version }: { version: DownloadVersion }) => (
-    <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-xs text-white/40">
+      <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-xs lg:text-sm text-white/40">
       <span className="bg-white/10 px-2 py-0.5 rounded-full font-mono">
         v{version.version}
       </span>
@@ -77,7 +77,7 @@ function App() {
         <div className="absolute top-[40%] right-[20%] w-[30%] h-[30%] bg-emerald-500/3 rounded-full blur-[100px]" />
       </div>
 
-      <div className="relative w-full max-w-sm mx-auto px-4">
+      <div className="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-4">
           <div className="inline-block mb-3 motion-safe:animate-fade-in">
             <div className="relative">
@@ -85,20 +85,20 @@ function App() {
               <img
                 src="/icon.png"
                 alt="Mr. Player"
-                className="relative w-14 h-14 mx-auto rounded-xl shadow-2xl motion-safe:animate-float"
+                className="relative w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 mx-auto rounded-xl shadow-2xl motion-safe:animate-float"
               />
             </div>
           </div>
 
           <div className="motion-safe:animate-fade-in-up" style={{ animationDelay: "0.1s", animationFillMode: "both" }}>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-5xl xl:text-6xl font-black tracking-tight">
               <span className="gradient-text">Mr. Player</span>
             </h1>
           </div>
         </div>
 
         <nav
-          className="glass rounded-xl p-1 flex gap-1 mb-3 motion-safe:animate-fade-in-up"
+          className="glass rounded-xl p-1 flex gap-1 sm:gap-2 lg:gap-3 mb-3 motion-safe:animate-fade-in-up"
           style={{ animationDelay: "0.2s", animationFillMode: "both" }}
           role="tablist"
           aria-label="Plataforma"
@@ -108,7 +108,7 @@ function App() {
             aria-selected={activeTab === "android"}
             onClick={() => setActiveTab("android")}
             onKeyDown={(e) => handleKeyDown(e, () => setActiveTab("android"))}
-            className={`flex-1 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/50 ${
+            className={`flex-1 py-2 rounded-lg text-xs sm:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/50 ${
               activeTab === "android"
                 ? "bg-white/10 text-white shadow-lg shadow-black/20"
                 : "text-white/40 hover:text-white/70"
@@ -122,7 +122,7 @@ function App() {
             aria-selected={activeTab === "windows"}
             onClick={() => setActiveTab("windows")}
             onKeyDown={(e) => handleKeyDown(e, () => setActiveTab("windows"))}
-            className={`flex-1 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/50 ${
+            className={`flex-1 py-2 rounded-lg text-xs sm:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/50 ${
               activeTab === "windows"
                 ? "bg-white/10 text-white shadow-lg shadow-black/20"
                 : "text-white/40 hover:text-white/70"
@@ -135,18 +135,18 @@ function App() {
 
         {activeTab === "android" && (
           <div className="motion-safe:animate-fade-in" role="tabpanel" aria-label="Android">
-            <div className="glass-card p-5 text-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/10 flex items-center justify-center mx-auto mb-3">
-                <Smartphone className="w-5 h-5 text-green-400" aria-hidden="true" />
+            <div className="glass-card p-5 sm:p-6 lg:p-8 xl:p-10 text-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/10 border border-green-500/10 flex items-center justify-center mx-auto mb-3">
+                <Smartphone className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-green-400" aria-hidden="true" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
+              <h3 className="text-base sm:text-lg lg:text-2xl font-semibold text-white mb-2">
                 Universal
               </h3>
               {apk && <VersionBadge version={apk} />}
               <button
                 onClick={() => handleDownload(apk)}
                 disabled={!apk}
-                className={`btn-primary w-full py-3 mt-3 text-xs sm:text-sm ${
+                className={`btn-primary w-full py-3 sm:py-4 mt-3 text-xs sm:text-sm lg:text-base xl:text-lg ${
                   apk
                     ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/20 motion-safe:glow-green"
                     : "bg-white/5 text-white/20 cursor-not-allowed"
@@ -168,17 +168,17 @@ function App() {
 
         {activeTab === "windows" && exe && (
           <div className="motion-safe:animate-fade-in" role="tabpanel" aria-label="Windows">
-            <div className="glass-card-strong p-5 text-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500/20 to-blue-500/10 border border-sky-500/10 flex items-center justify-center mx-auto mb-3">
-                <Monitor className="w-5 h-5 text-sky-400" aria-hidden="true" />
+            <div className="glass-card-strong p-5 sm:p-6 lg:p-8 xl:p-10 text-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br from-sky-500/20 to-blue-500/10 border border-sky-500/10 flex items-center justify-center mx-auto mb-3">
+                <Monitor className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-sky-400" aria-hidden="true" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
+              <h3 className="text-base sm:text-lg lg:text-2xl font-semibold text-white mb-2">
                 Windows
               </h3>
               <VersionBadge version={exe} />
               <button
                 onClick={() => handleDownload(exe)}
-                className="btn-primary w-full py-3 mt-3 text-xs sm:text-sm bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg shadow-sky-500/20 motion-safe:glow-green"
+                className="btn-primary w-full py-3 sm:py-4 mt-3 text-xs sm:text-sm lg:text-base xl:text-lg bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg shadow-sky-500/20 motion-safe:glow-green"
                 aria-label={`Baixar EXE versão ${exe.version}`}
               >
                 <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
