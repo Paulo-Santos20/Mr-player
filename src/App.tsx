@@ -19,11 +19,15 @@ function App() {
 
   useEffect(() => {
     Promise.all([
-      fetchAPKVersion("universal"),
-      fetchEXEVersion(),
+      fetchAPKVersion("universal").catch(() => null),
+      fetchEXEVersion().catch(() => null),
     ]).then(([apkData, exeData]) => {
       setApk(apkData);
       setExe(exeData);
+    }).catch(() => {
+      setApk(null);
+      setExe(null);
+    }).finally(() => {
       setLoading(false);
     });
   }, []);

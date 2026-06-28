@@ -44,15 +44,14 @@ function formatDate(dateString: string): string {
 }
 
 async function fetchWithTimeout(url: string, timeoutMs = 10000): Promise<Response | null> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const res = await fetch(url, { cache: "no-cache", signal: controller.signal });
+    const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+    const timeout = setTimeout(() => controller?.abort(), timeoutMs);
+    const res = await fetch(url, { cache: "no-cache", signal: controller?.signal });
+    clearTimeout(timeout);
     return res;
   } catch {
     return null;
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
