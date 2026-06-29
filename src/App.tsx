@@ -32,26 +32,6 @@ function App() {
     });
   }, []);
 
-  const handleDownload = useCallback((version: DownloadVersion | null) => {
-    if (!version?.downloadUrl) return;
-
-    const url = version.downloadUrl;
-    const opened = window.open(url, '_blank');
-    if (!opened || opened.closed || typeof opened.closed === 'undefined') {
-      try {
-        const a = document.createElement('a');
-        a.href = url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      } catch {
-        window.location.href = url;
-      }
-    }
-  }, []);
-
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent, action: () => void) => {
       if (e.key === "Enter" || e.key === " ") {
@@ -161,25 +141,22 @@ function App() {
                 Universal
               </h3>
               {apk && <VersionBadge version={apk} />}
-              <button
-                onClick={() => handleDownload(apk)}
-                disabled={!apk}
-                className={`btn-primary w-full py-3 sm:py-4 mt-3 text-xs sm:text-sm lg:text-base xl:text-lg ${
-                  apk
-                    ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/20 motion-safe:glow-green"
-                    : "bg-white/5 text-white/20 cursor-not-allowed"
-                }`}
-                aria-label={apk ? `Baixar APK versão ${apk.version}` : "Indisponível"}
-              >
-                {apk ? (
-                  <>
-                    <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
-                    Baixar APK
-                  </>
-                ) : (
-                  "Indisponível"
-                )}
-              </button>
+              {apk ? (
+                <a
+                  href={apk.downloadUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full py-3 sm:py-4 mt-3 text-xs sm:text-sm lg:text-base xl:text-lg bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/20 motion-safe:glow-green"
+                  aria-label={`Baixar APK versão ${apk.version}`}
+                >
+                  <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  Baixar APK
+                </a>
+              ) : (
+                <span className="btn-primary w-full py-3 sm:py-4 mt-3 text-xs sm:text-sm lg:text-base xl:text-lg bg-white/5 text-white/20 cursor-not-allowed">
+                  Indisponível
+                </span>
+              )}
             </div>
           </div>
         )}
@@ -194,14 +171,16 @@ function App() {
                 Windows
               </h3>
               <VersionBadge version={exe} />
-              <button
-                onClick={() => handleDownload(exe)}
+              <a
+                href={exe.downloadUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="btn-primary w-full py-3 sm:py-4 mt-3 text-xs sm:text-sm lg:text-base xl:text-lg bg-gradient-to-r from-sky-500 to-blue-500 text-white shadow-lg shadow-sky-500/20 motion-safe:glow-green"
                 aria-label={`Baixar EXE versão ${exe.version}`}
               >
                 <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
                 Baixar EXE
-              </button>
+              </a>
             </div>
           </div>
         )}

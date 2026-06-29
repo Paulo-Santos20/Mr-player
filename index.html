@@ -26,72 +26,180 @@
     <meta name="theme-color" content="#0f172a" />
     <link rel="icon" type="image/png" href="/icon.png" />
     <link rel="apple-touch-icon" href="/icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <title>Mr. Player - Download</title>
     
     <style>
-      /* === Critical Samsung TV fallback (sem CSS Custom Properties) === */
+      /* ==== FALLBACK COMPLETO para Samsung TV (Tizen M63) ==== */
+      html { line-height: 1.5; }
       body {
-        margin: 0;
-        background: #0F0F23;
-        color: #F8FAFC;
-        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        margin: 0; background: #0F0F23; color: #F8FAFC;
+        font-family: system-ui, -apple-system, sans-serif;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
       }
-      *,:before,:after { box-sizing: border-box; }
-      .glass, .glass-card {
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.06);
-        border-radius: 1rem;
-      }
-      .glass-strong, .glass-card-strong {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 1rem;
-      }
-      .btn-primary {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        border-radius: 9999px;
-        font-weight: 700;
-        cursor: pointer;
-        overflow: hidden;
-        position: relative;
-      }
-      .gradient-text {
-        background: linear-gradient(to right, #fff, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
+      *, *::before, *::after { box-sizing: border-box; }
+      img { max-width: 100%; height: auto; display: block; }
+      button { cursor: pointer; font-family: inherit; font-size: 100%; }
+      a { color: inherit; text-decoration: none; }
+
+      /* Layout / Display */
+      .flex { display: flex; }
+      .inline-block { display: inline-block; }
+      .hidden { display: none; }
+      .flex-col { flex-direction: column; }
+      .flex-1 { flex: 1 1 0%; }
+      .shrink-0 { flex-shrink: 0; }
+      .items-center { align-items: center; }
+      .justify-center { justify-content: center; }
+      .relative { position: relative; }
+      .absolute { position: absolute; }
+      .fixed { position: fixed; }
+      .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+      .pointer-events-none { pointer-events: none; }
+      .overflow-hidden { overflow: hidden; }
+      .text-center { text-align: center; }
+      .min-h-screen { min-height: 100vh; }
+
+      /* Sizing */
+      .w-full { width: 100%; }
+      .w-4 { width: 1rem; } .w-5 { width: 1.25rem; } .w-6 { width: 1.5rem; }
+      .w-10 { width: 2.5rem; } .w-12 { width: 3rem; } .w-14 { width: 3.5rem; }
+      .h-4 { height: 1rem; } .h-5 { height: 1.25rem; } .h-6 { height: 1.5rem; }
+      .h-10 { height: 2.5rem; } .h-12 { height: 3rem; } .h-14 { height: 3.5rem; }
+      .w-\[60\%\] { width: 60%; } .w-\[50\%\] { width: 50%; } .w-\[30\%\] { width: 30%; }
+      .h-\[60\%\] { height: 60%; } .h-\[50\%\] { height: 50%; } .h-\[30\%\] { height: 30%; }
+      .max-w-sm { max-width: 24rem; }
+      .mx-auto { margin-left: auto; margin-right: auto; }
+
+      /* Spacing */
+      .p-1 { padding: 0.25rem; } .p-5 { padding: 1.25rem; }
+      .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+      .px-4 { padding-left: 1rem; padding-right: 1rem; }
+      [class~="py-0.5"] { padding-top: 0.125rem; padding-bottom: 0.125rem; }
+      .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+      .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+      .gap-1 { gap: 0.25rem; } [class~="gap-1.5"] { gap: 0.375rem; }
+      .mb-2 { margin-bottom: 0.5rem; } .mb-3 { margin-bottom: 0.75rem; }
+      .mb-4 { margin-bottom: 1rem; }
+      .mt-3 { margin-top: 0.75rem; } .mt-4 { margin-top: 1rem; }
+
+      /* Typography */
+      .text-xs { font-size: 0.75rem; line-height: 1rem; }
+      .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+      .text-base { font-size: 1rem; line-height: 1.5rem; }
+      .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+      .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+      .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+      .text-5xl { font-size: 3rem; line-height: 1; }
+      .text-6xl { font-size: 3.75rem; line-height: 1; }
+      .text-\[10px\] { font-size: 10px; }
+      .font-mono { font-family: ui-monospace, monospace; }
+      .font-semibold { font-weight: 600; }
+      .font-bold { font-weight: 700; }
+      .font-black { font-weight: 900; }
+      .tracking-tight { letter-spacing: -0.025em; }
       .text-white { color: #fff; }
-      .text-white\/40, .text-white\/20 { color: rgba(255,255,255,0.4); }
+      .text-white\/40 { color: rgba(255,255,255,0.4); }
       .text-white\/30 { color: rgba(255,255,255,0.3); }
+      .text-white\/20 { color: rgba(255,255,255,0.2); }
       .text-white\/15 { color: rgba(255,255,255,0.15); }
       .text-green-400 { color: #4ade80; }
       .text-sky-400 { color: #38bdf8; }
+
+      /* Backgrounds */
+      .bg-\[\#0F0F23\] { background: #0F0F23; }
       .bg-white\/10 { background: rgba(255,255,255,0.1); }
       .bg-white\/5 { background: rgba(255,255,255,0.05); }
+      .bg-green-500\/20 { background: rgba(34,197,94,0.2); }
+      .bg-green-500\/5 { background: rgba(34,197,94,0.05); }
+      .bg-green-500\/3 { background: rgba(34,197,94,0.03); }
+      .bg-indigo-500\/5 { background: rgba(99,102,241,0.05); }
+      .bg-emerald-500\/3 { background: rgba(16,185,129,0.03); }
+      /* Gradient button: Android (green) */
+      [class~="from-green-500"][class~="to-emerald-500"] {
+        background-image: linear-gradient(to right, #22c55e, #10b981);
+      }
+      /* Gradient button: Windows (sky) */
+      [class~="from-sky-500"][class~="to-blue-500"] {
+        background-image: linear-gradient(to right, #0ea5e9, #3b82f6);
+      }
+      /* Gradient icon container: Android */
+      [class~="from-green-500/20"][class~="to-emerald-500/10"] {
+        background-image: linear-gradient(to bottom right, rgba(34,197,94,0.2), rgba(16,185,129,0.1));
+      }
+      /* Gradient icon container: Windows */
+      [class~="from-sky-500/20"][class~="to-blue-500/10"] {
+        background-image: linear-gradient(to bottom right, rgba(14,165,233,0.2), rgba(59,130,246,0.1));
+      }
+      /* Gradient loading spinner */
+      [class~="from-green-500/20"][class~="to-green-600/10"] {
+        background-image: linear-gradient(to bottom right, rgba(34,197,94,0.2), rgba(22,163,74,0.1));
+      }
+      .gradient-text {
+        background: linear-gradient(to right, #fff, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Borders */
+      .border { border-width: 1px; border-style: solid; }
+      .border-white\/10 { border-color: rgba(255,255,255,0.1); }
+      .border-white\/\[0\.06\] { border-color: rgba(255,255,255,0.06); }
+      .border-green-500\/10 { border-color: rgba(34,197,94,0.1); }
+      .border-sky-500\/10 { border-color: rgba(14,165,233,0.1); }
       .rounded-xl { border-radius: 0.75rem; }
       .rounded-lg { border-radius: 0.5rem; }
       .rounded-full { border-radius: 9999px; }
-      .flex { display: flex; }
-      .flex-col { flex-direction: column; }
-      .items-center { align-items: center; }
-      .justify-center { justify-content: center; }
-      .w-full { width: 100%; }
-      .mx-auto { margin-left: auto; margin-right: auto; }
-      .text-center { text-align: center; }
-      .font-semibold { font-weight: 600; }
-      .font-black { font-weight: 900; }
+
+      /* Shadows */
+      .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+      .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -4px rgba(0,0,0,0.15); }
+
+      /* Glass */
+      .glass {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      }
+      .glass-strong {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 1rem;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      }
+      .glass-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 1rem; }
+      .glass-card-strong { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; }
+
+      /* Button */
+      .btn-primary {
+        display: inline-flex; align-items: center; justify-content: center;
+        gap: 0.5rem; border-radius: 9999px; font-weight: 700;
+        overflow: hidden; position: relative; cursor: pointer;
+      }
+      .btn-primary:active { transform: scale(0.97); }
+      .cursor-not-allowed { cursor: not-allowed; }
+      .transition-all { transition-property: all; transition-duration: 0.2s; }
+
+      /* Blur fallback (solid circles) */
+      .blur-\[120px\], .blur-\[100px\], .blur-xl { filter: none; }
+
+      /* Keyframes */
+      @keyframes fadeIn { 0%{opacity:0} 100%{opacity:1} }
+      @keyframes fadeInUp { 0%{opacity:0;transform:translateY(24px)} 100%{opacity:1;transform:translateY(0)} }
+      @keyframes pulse { 50%{opacity:.5} }
+      @keyframes spin { to{transform:rotate(360deg)} }
+      @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+      @keyframes glowPulse { 0%{box-shadow:0 0 20px rgba(34,197,94,0.15)} 100%{box-shadow:0 0 40px rgba(34,197,94,0.3)} }
+      .motion-safe\:animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+      .motion-safe\:animate-fade-in-up { animation: fadeInUp 0.7s ease-out forwards; }
+      .motion-safe\:animate-pulse { animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+      .motion-safe\:animate-spin { animation: spin 1s linear infinite; }
+      .motion-safe\:animate-float { animation: float 6s ease-in-out infinite; }
+      .motion-safe\:animate-glow-pulse { animation: glowPulse 3s ease-in-out infinite alternate; }
+      .motion-safe\:glow-green { animation: glowPulse 3s ease-in-out infinite alternate; }
     </style>
   </head>
-  <body>
+  <body style="margin:0;background:#0F0F23;color:#F8FAFC;font-family:system-ui,sans-serif;-webkit-font-smoothing:antialiased;">
     <div id="root"></div>
     <noscript>
       <div style="background:#0f172a;min-height:100vh;padding:2rem;text-align:center;color:#fff;font-family:system-ui,sans-serif;">
