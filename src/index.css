@@ -34,10 +34,22 @@
 
   @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
     .glass {
-      @apply bg-white/[0.08];
+      @apply bg-white/[0.08] border-white/[0.08];
     }
     .glass-strong {
-      @apply bg-white/[0.12];
+      @apply bg-white/[0.12] border-white/[0.10];
+    }
+    .glass-card {
+      @apply bg-white/[0.08] border-white/[0.08] shadow-xl shadow-black/25;
+    }
+    .glass-card:hover {
+      @apply bg-white/[0.10] border-white/[0.12] shadow-2xl shadow-black/35;
+    }
+    .glass-card-strong {
+      @apply bg-white/[0.12] border-white/[0.10] shadow-xl shadow-black/25;
+    }
+    .glass-card-strong:hover {
+      @apply bg-white/[0.14] border-white/[0.12] shadow-2xl shadow-black/35;
     }
   }
 

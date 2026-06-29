@@ -33,8 +33,22 @@ function App() {
   }, []);
 
   const handleDownload = useCallback((version: DownloadVersion | null) => {
-    if (version?.downloadUrl) {
-      window.location.href = version.downloadUrl;
+    if (!version?.downloadUrl) return;
+
+    const url = version.downloadUrl;
+    const opened = window.open(url, '_blank');
+    if (!opened || opened.closed || typeof opened.closed === 'undefined') {
+      try {
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch {
+        window.location.href = url;
+      }
     }
   }, []);
 

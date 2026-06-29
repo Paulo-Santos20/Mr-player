@@ -31,6 +31,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <title>Mr. Player - Download</title>
     
+    <style>
+      /* === Critical Samsung TV fallback (sem CSS Custom Properties) === */
+      body {
+        margin: 0;
+        background: #0F0F23;
+        color: #F8FAFC;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      *,:before,:after { box-sizing: border-box; }
+      .glass, .glass-card {
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 1rem;
+      }
+      .glass-strong, .glass-card-strong {
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 1rem;
+      }
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border-radius: 9999px;
+        font-weight: 700;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+      }
+      .gradient-text {
+        background: linear-gradient(to right, #fff, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .text-white { color: #fff; }
+      .text-white\/40, .text-white\/20 { color: rgba(255,255,255,0.4); }
+      .text-white\/30 { color: rgba(255,255,255,0.3); }
+      .text-white\/15 { color: rgba(255,255,255,0.15); }
+      .text-green-400 { color: #4ade80; }
+      .text-sky-400 { color: #38bdf8; }
+      .bg-white\/10 { background: rgba(255,255,255,0.1); }
+      .bg-white\/5 { background: rgba(255,255,255,0.05); }
+      .rounded-xl { border-radius: 0.75rem; }
+      .rounded-lg { border-radius: 0.5rem; }
+      .rounded-full { border-radius: 9999px; }
+      .flex { display: flex; }
+      .flex-col { flex-direction: column; }
+      .items-center { align-items: center; }
+      .justify-center { justify-content: center; }
+      .w-full { width: 100%; }
+      .mx-auto { margin-left: auto; margin-right: auto; }
+      .text-center { text-align: center; }
+      .font-semibold { font-weight: 600; }
+      .font-black { font-weight: 900; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
