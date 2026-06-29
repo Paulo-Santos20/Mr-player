@@ -11,6 +11,12 @@ import {
   fetchEXEVersion,
 } from "./services/versions";
 
+const isTizen = typeof navigator !== "undefined" &&
+  /Tizen|SMART-TV|SmartTV|Web0S/.test(navigator.userAgent);
+
+const qrUrl = (url: string) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(url)}`;
+
 function App() {
   const [apk, setApk] = useState<DownloadVersion | null>(null);
   const [exe, setExe] = useState<DownloadVersion | null>(null);
@@ -43,7 +49,7 @@ function App() {
   );
 
   const VersionBadge = ({ version }: { version: DownloadVersion }) => (
-      <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-xs lg:text-sm text-white/40">
+      <div className="flex items-center justify-center gap-1.5 text-[10px] sm:text-xs lg:text-sm text-white/60">
       <span className="bg-white/10 px-2 py-0.5 rounded-full font-mono">
         v{version.version}
       </span>
@@ -109,7 +115,7 @@ function App() {
             className={`flex-1 py-2 rounded-lg text-xs sm:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400/50 ${
               activeTab === "android"
                 ? "bg-white/10 text-white shadow-lg shadow-black/20"
-                : "text-white/40 hover:text-white/70"
+                : "text-white/60 hover:text-white/90"
             }`}
           >
             <Smartphone className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -123,7 +129,7 @@ function App() {
             className={`flex-1 py-2 rounded-lg text-xs sm:text-sm lg:text-base xl:text-lg font-semibold transition-all duration-200 flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/50 ${
               activeTab === "windows"
                 ? "bg-white/10 text-white shadow-lg shadow-black/20"
-                : "text-white/40 hover:text-white/70"
+                : "text-white/60 hover:text-white/90"
             }`}
           >
             <Monitor className="w-4 h-4 shrink-0" aria-hidden="true" />
@@ -157,6 +163,17 @@ function App() {
                   Indisponível
                 </span>
               )}
+              {isTizen && apk?.downloadUrl && (
+                <div className="mt-3 pt-3 border-t border-white/10 text-center motion-safe:animate-fade-in">
+                  <p className="text-white/50 text-[10px] mb-2">Baixe no celular:</p>
+                  <img src={qrUrl(apk.downloadUrl)} alt="QR Code Android"
+                       className="w-24 h-24 mx-auto rounded-lg bg-white/5 p-1"
+                       loading="lazy" decoding="async" />
+                  <p className="text-white/30 text-[8px] mt-1 break-all px-2 select-all">
+                    {apk.downloadUrl}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -181,6 +198,17 @@ function App() {
                 <Download className="w-4 h-4 shrink-0" aria-hidden="true" />
                 Baixar EXE
               </a>
+              {isTizen && exe?.downloadUrl && (
+                <div className="mt-3 pt-3 border-t border-white/10 text-center motion-safe:animate-fade-in">
+                  <p className="text-white/50 text-[10px] mb-2">Baixe no celular:</p>
+                  <img src={qrUrl(exe.downloadUrl)} alt="QR Code Windows"
+                       className="w-24 h-24 mx-auto rounded-lg bg-white/5 p-1"
+                       loading="lazy" decoding="async" />
+                  <p className="text-white/30 text-[8px] mt-1 break-all px-2 select-all">
+                    {exe.downloadUrl}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
